@@ -1,6 +1,6 @@
-import backend.training.Identification;
 import consumer.api.KafkaAvroConsumer;
 import consumer.api.KafkaStringConsumer;
+import org.apache.avro.specific.SpecificRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import utils.Constants;
 
@@ -17,7 +17,7 @@ public class Main {
         System.out.println(message.value());
 
         kafkaAvroConsumer.subscribe_to(Constants.CONSUMED_TOPIC);
-        ConsumerRecord<String, Identification> avroMessage = kafkaAvroConsumer.pollMessage(Constants.POLLING_TIMEOUT_MS);
+        ConsumerRecord<String, SpecificRecord> avroMessage = kafkaAvroConsumer.pollMessage(Constants.POLLING_TIMEOUT_MS);
         kafkaAvroConsumer.closeConsumer();
         System.out.println(avroMessage);
     }
