@@ -8,10 +8,10 @@ public class Main {
 
     private static final Identification IDENTIFICATION_AVRO_MESSAGE = Identification.newBuilder()
             .setFirstName("William")
-            .setLastName("Foo-foo")
+            .setLastName("Smith")
             .setAge(42)
-            .setBirthCountry("UK")
-            .setPetName("Bunny")
+            .setBirthCountry("Spain")
+            .setPetName("Rex")
             .build();
 
     public static void main(String[] args) {

@@ -2,7 +2,7 @@
   "type" : "record",
   "namespace": "backend.training",
   "name" : "Identification",
-  "doc": "Register citizen identification data",
+  "doc": "Registered citizen identification data",
   "fields": [
     {
       "name": "firstName",
