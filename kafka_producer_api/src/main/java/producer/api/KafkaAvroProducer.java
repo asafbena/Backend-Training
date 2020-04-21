@@ -1,3 +1,5 @@
+package producer.api;
+
 import backend.training.Identification;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;

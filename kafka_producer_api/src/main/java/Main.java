@@ -1,4 +1,6 @@
 import backend.training.Identification;
+import producer.api.KafkaAvroProducer;
+import producer.api.KafkaStringProducer;
 import utils.Constants;
 
 public class Main {

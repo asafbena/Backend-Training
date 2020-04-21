@@ -1,3 +1,5 @@
+package consumer.api;
+
 import backend.training.Identification;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import utils.Constants;

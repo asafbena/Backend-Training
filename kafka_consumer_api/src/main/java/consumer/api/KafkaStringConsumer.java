@@ -1,6 +1,6 @@
+package consumer.api;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
 import utils.Constants;
 
 public class KafkaStringConsumer extends KafkaConsumer<String> {

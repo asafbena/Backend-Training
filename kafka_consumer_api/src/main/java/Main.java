@@ -1,13 +1,8 @@
 import backend.training.Identification;
+import consumer.api.KafkaAvroConsumer;
+import consumer.api.KafkaStringConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import utils.Constants;
-
-import java.time.Duration;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) {

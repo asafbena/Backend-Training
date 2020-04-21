@@ -1,3 +1,5 @@
+package producer.api;
+
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.slf4j.Logger;
