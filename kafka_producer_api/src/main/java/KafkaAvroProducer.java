@@ -16,6 +16,7 @@ public class KafkaAvroProducer extends KafkaProducer<Identification> {
     }
 
     public void sendMessage(String messageTopic, Identification identificationMessage) {
+        LOGGER.info("Sending the following avro message with topic {}: {}", messageTopic, identificationMessage);
         this.producer.send(new ProducerRecord<String, Identification>(messageTopic, identificationMessage));
     }
 }

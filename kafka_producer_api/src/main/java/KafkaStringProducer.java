@@ -16,6 +16,7 @@ public class KafkaStringProducer extends KafkaProducer<String> {
     }
 
     public void sendMessage(String messageTopic, String sentMessage) {
+        LOGGER.info("Sending the following string message with topic {}: {}", messageTopic, sentMessage);
         this.producer.send(new ProducerRecord<String, String>(messageTopic, sentMessage));
     }
 }
