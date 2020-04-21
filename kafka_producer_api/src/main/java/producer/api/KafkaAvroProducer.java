@@ -18,8 +18,8 @@ public class KafkaAvroProducer extends KafkaProducer<SpecificRecord> {
         this.producer = new org.apache.kafka.clients.producer.KafkaProducer<String, SpecificRecord>(this.producerProperties);
     }
 
-    public void sendMessage(String messageTopic, Identification identificationMessage) {
-        LOGGER.info("Sending the following avro message with topic {}: {}", messageTopic, identificationMessage);
-        this.producer.send(new ProducerRecord<String, SpecificRecord>(messageTopic, identificationMessage));
+    public void sendMessage(String messageTopic, SpecificRecord avroMessageContent) {
+        LOGGER.info("Sending the following avro message with topic {}: {}", messageTopic, avroMessageContent);
+        this.producer.send(new ProducerRecord<String, SpecificRecord>(messageTopic, avroMessageContent));
     }
 }
