@@ -1,0 +1,28 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.commercehub.gradle.plugin:gradle-avro-plugin:0.9.1"
+        classpath 'org.apache.avro:avro-compiler:1.7.1'
+
+    }
+}
+
+plugins {
+    id 'java'
+    id "com.commercehub.gradle.plugin.avro" version "0.9.1"
+}
+
+repositories {
+    jcenter()
+}
+dependencies {
+    compile "org.apache.avro:avro:1.9.2"
+}
+
+version 'sampleavroexercise'
+
+sourceCompatibility = 1.8
+
+apply plugin: "com.commercehub.gradle.plugin.avro"

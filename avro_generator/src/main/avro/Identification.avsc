@@ -1,0 +1,38 @@
+{
+  "type" : "record",
+  "namespace": "backend.training",
+  "name" : "Identification",
+  "doc": "Register citizen identification data",
+  "fields": [
+    {
+      "name": "firstName",
+      "type": "string",
+      "doc": "Person first name"
+    },
+    {
+      "name": "lastName",
+      "type": "string",
+      "doc": "Person last name"
+    },
+    {
+      "name": "birthCountry",
+      "type": "string",
+      "default": "Israel",
+      "doc": "Person birth country"
+    },
+    {
+      "name": "age",
+      "type": "int",
+      "doc": "Person current age"
+    },
+    {
+      "name": "petName",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null,
+      "doc": "Person current pet name"
+    }
+  ]
+}
