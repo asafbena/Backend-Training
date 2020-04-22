@@ -43,7 +43,7 @@ public class KafkaConsumer<T> {
             return null;
         }
         ConsumerRecord<String, T> receivedMessage = records.iterator().next();
-        LOGGER.debug("The consumer managed to poll the following message: {}", receivedMessage.value());
+        LOGGER.info("The consumer managed to poll the following message: {}", receivedMessage.value());
         return receivedMessage;
     }
 
