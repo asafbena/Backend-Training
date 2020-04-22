@@ -1,0 +1,6 @@
+kafkaProperties:
+  bootstrap.server: 'localhost:9092'
+  client.id: 'producer-client-id'
+  schema.registry.url: 'http://localhost:8081'
+topicProperties:
+  name: 'avro-messages-section-5-3'
