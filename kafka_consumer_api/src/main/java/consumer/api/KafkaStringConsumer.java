@@ -4,8 +4,9 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import utils.Constants;
 
 public class KafkaStringConsumer extends KafkaConsumer<String> {
-    public KafkaStringConsumer(String broker, String schemaRegistryUrl) {
-        super(broker, schemaRegistryUrl);
+    public KafkaStringConsumer(String broker) {
+        super(broker);
+        initializeConsumer();
     }
 
     @Override

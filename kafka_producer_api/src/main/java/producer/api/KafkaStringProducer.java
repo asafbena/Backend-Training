@@ -6,8 +6,9 @@ import utils.Constants;
 
 public class KafkaStringProducer extends KafkaProducer<String> {
 
-    public KafkaStringProducer(String broker, String schemaRegistryUrl) {
-        super(broker, schemaRegistryUrl);
+    public KafkaStringProducer(String broker) {
+        super(broker);
+        initializeProducer();
     }
 
     @Override

@@ -15,14 +15,11 @@ public class KafkaConsumer<T> {
     protected static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 
     private String broker;
-    private String schemaRegistryUrl;
     protected org.apache.kafka.clients.consumer.KafkaConsumer<String, T> consumer;
     protected Properties consumerProperties;
 
-    public KafkaConsumer(String broker, String schemaRegistryUrl) {
+    public KafkaConsumer(String broker) {
         this.broker = broker;
-        this.schemaRegistryUrl = schemaRegistryUrl;
-        initializeConsumer();
     }
 
     public void initializeConsumer() {
@@ -30,7 +27,6 @@ public class KafkaConsumer<T> {
         this.consumerProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, this.broker);
         this.consumerProperties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, Constants.MAX_NUMBER_OF_POLLED_MESSAGES);
         this.consumerProperties.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
-        this.consumerProperties.put(Constants.SCHEMA_REGISTRY_URL_COMPONENT_NAME, this.schemaRegistryUrl);
         this.consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, Constants.STRINGS_DESERIALIZER_PATH);
     }
 

@@ -12,20 +12,16 @@ public class KafkaProducer<T> {
     protected static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
 
     private String broker;
-    private String schemaRegistryUrl;
     protected Producer<String, T> producer;
     protected Properties producerProperties;
 
-    public KafkaProducer(String broker, String schemaRegistryUrl) {
+    public KafkaProducer(String broker) {
         this.broker = broker;
-        this.schemaRegistryUrl = schemaRegistryUrl;
-        initializeProducer();
     }
 
     public void initializeProducer() {
         this.producerProperties = new Properties();
         this.producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.broker);
-        this.producerProperties.put(Constants.SCHEMA_REGISTRY_URL_COMPONENT_NAME, this.schemaRegistryUrl);
         this.producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, Constants.STRINGS_SERIALIZER_PATH);
     }
 

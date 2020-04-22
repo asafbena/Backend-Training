@@ -15,8 +15,7 @@ public class Main {
             .build();
 
     public static void main(String[] args) {
-        KafkaStringProducer kafkaStringProducer = new KafkaStringProducer(Constants.BROKER,
-                Constants.SCHEMA_REGISTRY_URL);
+        KafkaStringProducer kafkaStringProducer = new KafkaStringProducer(Constants.BROKER);
         KafkaAvroProducer kafkaAvroProducer = new KafkaAvroProducer(Constants.BROKER,
                 Constants.SCHEMA_REGISTRY_URL);
 
