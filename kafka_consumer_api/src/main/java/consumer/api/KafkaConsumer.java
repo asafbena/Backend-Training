@@ -23,11 +23,8 @@ public class KafkaConsumer<T> {
     }
 
     public void initializeConsumer() {
-        this.consumerProperties = new Properties();
-        this.consumerProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, this.broker);
-        this.consumerProperties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, Constants.MAX_NUMBER_OF_POLLED_MESSAGES);
-        this.consumerProperties.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
-        this.consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, Constants.STRINGS_DESERIALIZER_PATH);
+        initializeConsumerProperties();
+        this.consumer = new org.apache.kafka.clients.consumer.KafkaConsumer<String, T>(this.consumerProperties);
     }
 
     public void subscribe_to(String topicName) {
@@ -50,5 +47,13 @@ public class KafkaConsumer<T> {
     public void closeConsumer() {
         LOGGER.info("Stopping the consumer activity");
         consumer.close();
+    }
+
+    protected void initializeConsumerProperties() {
+        this.consumerProperties = new Properties();
+        this.consumerProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, this.broker);
+        this.consumerProperties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, Constants.MAX_NUMBER_OF_POLLED_MESSAGES);
+        this.consumerProperties.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
+        this.consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, Constants.STRINGS_DESERIALIZER_PATH);
     }
 }

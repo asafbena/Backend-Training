@@ -13,10 +13,9 @@ public class KafkaAvroConsumer<S> extends KafkaConsumer<S> {
     }
 
     @Override
-    public void initializeConsumer() {
-        super.initializeConsumer();
+    protected void initializeConsumerProperties() {
+        super.initializeConsumerProperties();
         this.consumerProperties.put(Constants.SCHEMA_REGISTRY_URL_COMPONENT_NAME, this.schemaRegistryUrl);
         this.consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, Constants.AVRO_DESERIALIZER_PATH);
-        this.consumer = new org.apache.kafka.clients.consumer.KafkaConsumer<String, S>(this.consumerProperties);
     }
 }
