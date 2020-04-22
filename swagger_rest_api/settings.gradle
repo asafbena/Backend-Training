@@ -1,0 +1,9 @@
+def name = 'petstore'
+def rootName = "petstore"
+def serverName = "${name}-server"
+
+rootProject.name = rootName
+
+file(serverName).mkdir()
+
+include serverName
