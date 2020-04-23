@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "MyIdentity",
+  "fields" : [
+    {"name": "firstName", "type": "string"},
+    {"name": "lastName", "type": "string"},
+    {"name": "country", "type": "string",  "default": "Israel"},
+    {"name": "age", "type": "int"},
+    {"name": "petName", "type": ["string", "null"], "default": null},
+    {"name": "favouriteWatchCompany", "type": ["string", "null"], "default": "Omega"}
+  ]
+}
