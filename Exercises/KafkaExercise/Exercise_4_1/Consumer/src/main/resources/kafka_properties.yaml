@@ -1,3 +1,0 @@
-# constant properties for kafka
----
-bootstrap.server: 'localhost:9092'

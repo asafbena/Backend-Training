@@ -2,12 +2,12 @@ package org.ishaym.training;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.ishaym.training.common.Common;
+import org.ishaym.training.common.Constants;
+import org.ishaym.training.exception.TopicNotFoundException;
 
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
@@ -15,14 +15,15 @@ public class Main {
     public static void main(String[] args) {
         try {
             KafkaEnvironmentSetUp.setUp();
-            ExerciseKafkaProducer producer = new ExerciseKafkaProducer();
-            producer.sendMessage(Common.STRING_MESSAGES_TOPIC, 0, "Some Message");
+            MessagesProducer producer = new MessagesProducer();
+            producer.sendMessage(Constants.genInstance().getTopicProperties().getName(),
+                    0, "Some Message");
             producer.close();
         } catch (InterruptedException e) {
             LOGGER.fatal(e);
             Thread.currentThread().interrupt();
             System.exit(-1);
-        } catch (ExecutionException | TimeoutException | IOException e) {
+        } catch (ExecutionException | IOException | TopicNotFoundException e) {
             LOGGER.fatal(e);
             System.exit(-1);
         } catch (RuntimeException e) {

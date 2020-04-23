@@ -1,0 +1,11 @@
+kafkaProperties:
+  bootstrap.server: 'localhost:9092'
+  client.id: 'consumer-client-id'
+topicProperties:
+  name: 'string-messages'
+  numPartitions: 1
+  replicationFactor: 1
+  creationTimeoutSeconds: 10
+consumerProperties:
+  groupId: 'string-messages-consumer-group-id'
+  pollingTimeoutInMilliSeconds: 100

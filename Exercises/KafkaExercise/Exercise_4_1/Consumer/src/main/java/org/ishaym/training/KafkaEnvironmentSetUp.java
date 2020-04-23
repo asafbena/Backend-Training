@@ -3,11 +3,12 @@ package org.ishaym.training;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.CreateTopicsResult;
 import org.apache.kafka.clients.admin.NewTopic;
-import org.ishaym.training.common.Common;
-import org.ishaym.training.constants.KafkaProperties;
+import org.ishaym.training.common.Constants;
+import org.ishaym.training.config.KafkaProperties;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.ishaym.training.config.TopicProperties;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -19,11 +20,6 @@ import java.util.concurrent.TimeoutException;
 public class KafkaEnvironmentSetUp {
     private static final Logger LOGGER = LogManager.getLogger(KafkaEnvironmentSetUp.class);
 
-    private static final String CLIENT_ID = "consumer-client-id";
-    private static final int NUMBER_OF_PARTITIONS = 1;
-    private static final int FACTOR_OF_REPLICAS = 1;
-    private static final int TIMEOUT = 10;
-
     private KafkaEnvironmentSetUp() {
 
     }
@@ -31,11 +27,11 @@ public class KafkaEnvironmentSetUp {
     private static Properties createAdminProperties() throws IOException {
         LOGGER.debug("started creating the admin properties object");
 
-        KafkaProperties propertiesFromFile = Common.getKafkaPropertiesFromFile();
+        KafkaProperties kafkaProperties = Constants.genInstance().getKafkaProperties();
 
         Properties props = new Properties();
-        props.put("bootstrap.servers", propertiesFromFile.getBootstrapServer());
-        props.put("client.id", CLIENT_ID);
+        props.put("bootstrap.servers", kafkaProperties.getBootstrapServer());
+        props.put("client.id", kafkaProperties.getClientId());
 
         return props;
     }
@@ -46,33 +42,37 @@ public class KafkaEnvironmentSetUp {
         return AdminClient.create(createAdminProperties());
     }
 
-    private static boolean isTopicExists(AdminClient adminClient, String topic)
-            throws ExecutionException, InterruptedException {
+    private static boolean isTopicExists(AdminClient adminClient)
+            throws ExecutionException, InterruptedException, IOException {
         LOGGER.debug("checking if topic already exists");
 
-        return adminClient.listTopics().names().get().contains(topic);
+        return adminClient.listTopics().names().get().contains(
+                Constants.genInstance().getTopicProperties().getName());
     }
 
-    private static void createTopic(AdminClient adminClient, String topicName)
-            throws ExecutionException, InterruptedException, TimeoutException {
+    private static void createTopic(AdminClient adminClient)
+            throws ExecutionException, InterruptedException, TimeoutException, IOException {
         LOGGER.debug("started creating the new topic");
 
-        NewTopic newTopic = new NewTopic(topicName, NUMBER_OF_PARTITIONS,
-                (short) FACTOR_OF_REPLICAS);
+        TopicProperties topicProperties = Constants.genInstance().getTopicProperties();
+
+        NewTopic newTopic = new NewTopic(topicProperties.getName(),
+                topicProperties.getNumPartitions(), (short) topicProperties.getReplicationFactor());
         final CreateTopicsResult createTopicsResult =
                 adminClient.createTopics(Collections.singleton(newTopic));
-        createTopicsResult.values().get(topicName).get(TIMEOUT, TimeUnit.SECONDS);
+        createTopicsResult.values().get(topicProperties.getName()).get(
+                Constants.genInstance().getTopicProperties().getCreationTimeoutSeconds(),
+                TimeUnit.SECONDS);
     }
 
     public static void setUp() throws IOException, ExecutionException, InterruptedException,
             TimeoutException {
         LOGGER.debug("started creating the consumer environment");
 
-        String topic = Common.STRING_MESSAGES_TOPIC;
-
-        AdminClient adminClient = createAdminClient();
-        if (!isTopicExists(adminClient, topic)) {
-            createTopic(adminClient, topic);
+        try (AdminClient adminClient = createAdminClient()) {
+            if (!isTopicExists(adminClient)) {
+                createTopic(adminClient);
+            }
         }
     }
 
