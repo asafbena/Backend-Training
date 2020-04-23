@@ -6,8 +6,8 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.ishaym.training.common.Common;
-import org.ishaym.training.constants.KafkaProperties;
+import org.ishaym.training.common.Constants;
+import org.ishaym.training.config.KafkaProperties;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -20,11 +20,11 @@ public class ExerciseKafkaProducer {
     private Properties createKafkaProperties() throws IOException {
         LOGGER.debug("started creating the producer properties object");
 
-        KafkaProperties propertiesFromFile = Common.getKafkaPropertiesFromFile();
+        KafkaProperties kafkaProperties = Constants.genInstance().getKafkaProperties();
 
         Properties props = new Properties();
-        props.put("bootstrap.servers", propertiesFromFile.getBootstrapServer());
-        props.put("schema.registry.url", propertiesFromFile.getSchemaRegistryUrl());
+        props.put("bootstrap.servers", kafkaProperties.getBootstrapServer());
+        props.put("schema.registry.url", kafkaProperties.getSchemaRegistryUrl());
         props.put("key.serializer", "org.apache.kafka.common.serialization.IntegerSerializer");
         props.put("value.serializer", KafkaAvroSerializer.class.getName());
 

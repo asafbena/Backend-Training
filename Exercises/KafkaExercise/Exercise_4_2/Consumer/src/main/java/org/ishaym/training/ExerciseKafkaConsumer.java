@@ -1,41 +1,35 @@
 package org.ishaym.training;
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.ishaym.training.common.Common;
-import org.ishaym.training.constants.KafkaProperties;
+import org.ishaym.training.common.Constants;
+import org.ishaym.training.runnable.ConsumerAction;
 
 import java.io.IOException;
-import java.text.MessageFormat;
-import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
 
-
 public class ExerciseKafkaConsumer {
     private static final Logger LOGGER = LogManager.getLogger(ExerciseKafkaConsumer.class);
-
-    private static final String CONSUMER_GROUP_ID = "avro-messages-consumer-5-2-group-id";
-    private static final int POLLING_TIMEOUT = 100;
 
     private Consumer<Integer, Person> consumer;
 
     private Properties createKafkaProperties() throws IOException {
         LOGGER.debug("started creating the consumer properties object");
 
-        KafkaProperties propertiesFromFile = Common.getKafkaPropertiesFromFile();
+        Constants constants = Constants.genInstance();
 
         Properties props = new Properties();
-        props.put("bootstrap.servers", propertiesFromFile.getBootstrapServer());
-        props.put("schema.registry.url", propertiesFromFile.getSchemaRegistryUrl());
-        props.put("group.id", CONSUMER_GROUP_ID);
+        props.put("bootstrap.servers", constants.getKafkaProperties().getBootstrapServer());
+        props.put("schema.registry.url", constants.getKafkaProperties().getSchemaRegistryUrl());
+        props.put("group.id", constants.getConsumerProperties().getGroupId());
         props.put("key.deserializer", "org.apache.kafka.common.serialization.IntegerDeserializer");
         props.put("value.deserializer", KafkaAvroDeserializer.class.getName());
+        props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
 
         return props;
     }
@@ -51,20 +45,7 @@ public class ExerciseKafkaConsumer {
     }
 
     public void consume() {
-        Thread thread = new Thread(
-                () -> {
-                    while (!Thread.currentThread().isInterrupted()) {
-                        ConsumerRecords<Integer, Person> records = consumer.poll(
-                                Duration.ofMillis(POLLING_TIMEOUT));
-                        for (ConsumerRecord<Integer, Person> record : records) {
-                            String output = MessageFormat.format(
-                                    "message key: {0} , message value: {1}", record.key(),
-                                    record.value());
-                            LOGGER.info(output);
-                        }
-                    }
-                }
-        );
+        Thread thread = new Thread(new ConsumerAction(consumer));
         thread.start();
     }
 }
