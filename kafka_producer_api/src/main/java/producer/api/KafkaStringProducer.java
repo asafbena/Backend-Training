@@ -11,15 +11,14 @@ public class KafkaStringProducer extends KafkaProducer<String> {
         initializeProducer();
     }
 
-    @Override
-    public void initializeProducer() {
-        super.initializeProducer();
-        this.producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, Constants.STRINGS_SERIALIZER_PATH);
-        this.producer = new org.apache.kafka.clients.producer.KafkaProducer<String, String>(this.producerProperties);
-    }
-
     public void sendMessage(String messageTopic, String sentMessage) {
         LOGGER.info("Sending the following string message with topic {}: {}", messageTopic, sentMessage);
         this.producer.send(new ProducerRecord<String, String>(messageTopic, sentMessage));
+    }
+
+    @Override
+    public void initializeProducerProperties() {
+        super.initializeProducerProperties();
+        this.producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, Constants.STRINGS_SERIALIZER_PATH);
     }
 }

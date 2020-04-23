@@ -20,13 +20,18 @@ public class KafkaProducer<T> {
     }
 
     public void initializeProducer() {
-        this.producerProperties = new Properties();
-        this.producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.broker);
-        this.producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, Constants.STRINGS_SERIALIZER_PATH);
+        initializeProducerProperties();
+        this.producer = new org.apache.kafka.clients.producer.KafkaProducer<String, T>(this.producerProperties);
     }
 
     public void closeProducer() {
         LOGGER.info("Stopping the producer activity.");
         producer.close();
+    }
+
+    protected void initializeProducerProperties() {
+        this.producerProperties = new Properties();
+        this.producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.broker);
+        this.producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, Constants.STRINGS_SERIALIZER_PATH);
     }
 }
