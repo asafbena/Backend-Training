@@ -10,7 +10,7 @@ public class Constants {
     public static final String STRINGS_SERIALIZER_PATH = "org.apache.kafka.common.serialization.StringSerializer";
     public static final String SENT_MESSAGES_TOPIC = "test";
     public static final String STRING_MESSAGE_CONTENT = "simple message";
-    public static final Identification IDENTIFICATION_AVRO_MESSAGE = Identification.newBuilder()
+    public static final Identification IDENTIFICATION = Identification.newBuilder()
             .setFirstName("William")
             .setLastName("Smith")
             .setAge(42)

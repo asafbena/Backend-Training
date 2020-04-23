@@ -12,7 +12,7 @@ public class Main {
         kafkaStringProducer.sendMessage(Constants.SENT_MESSAGES_TOPIC, Constants.STRING_MESSAGE_CONTENT);
         kafkaStringProducer.closeProducer();
 
-        kafkaAvroProducer.sendMessage(Constants.SENT_MESSAGES_TOPIC, Constants.IDENTIFICATION_AVRO_MESSAGE);
+        kafkaAvroProducer.sendMessage(Constants.SENT_MESSAGES_TOPIC, Constants.IDENTIFICATION);
         kafkaAvroProducer.closeProducer();
     }
 }
