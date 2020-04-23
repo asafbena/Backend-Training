@@ -25,6 +25,7 @@ public class KafkaConsumer<T> {
     public void initializeConsumer() {
         initializeConsumerProperties();
         this.consumer = new org.apache.kafka.clients.consumer.KafkaConsumer<String, T>(this.consumerProperties);
+        this.subscribe_to(Constants.CONSUMED_TOPIC);
     }
 
     public void subscribe_to(String topicName) {

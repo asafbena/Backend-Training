@@ -10,11 +10,9 @@ public class Main {
         KafkaAvroConsumer<Identification> kafkaAvroConsumer = new KafkaAvroConsumer<Identification>(Constants.BROKER,
                 Constants.SCHEMA_REGISTRY_URL);
 
-        kafkaStringConsumer.subscribe_to(Constants.CONSUMED_TOPIC);
         kafkaStringConsumer.pollMessage(Constants.POLLING_TIMEOUT_MS);
         kafkaStringConsumer.closeConsumer();
 
-        kafkaAvroConsumer.subscribe_to(Constants.CONSUMED_TOPIC);
         ConsumerRecord<String, Identification> avroMessage = kafkaAvroConsumer.pollMessage(Constants.POLLING_TIMEOUT_MS);
         kafkaAvroConsumer.closeConsumer();
     }
