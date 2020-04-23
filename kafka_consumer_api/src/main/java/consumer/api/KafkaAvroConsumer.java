@@ -10,6 +10,7 @@ public class KafkaAvroConsumer<S> extends KafkaConsumer<S> {
         super(broker);
         this.schemaRegistryUrl = schemaRegistryUrl;
         initializeConsumer();
+        this.subscribe_to(Constants.CONSUMED_AVRO_MESSAGES_TOPIC);
     }
 
     @Override

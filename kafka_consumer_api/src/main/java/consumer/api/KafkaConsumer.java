@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.Properties;
 import java.util.UUID;
 
-public class KafkaConsumer<T> {
+public class KafkaConsumer<T> implements Runnable{
     protected static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 
     private String broker;
@@ -25,7 +25,6 @@ public class KafkaConsumer<T> {
     public void initializeConsumer() {
         initializeConsumerProperties();
         this.consumer = new org.apache.kafka.clients.consumer.KafkaConsumer<String, T>(this.consumerProperties);
-        this.subscribe_to(Constants.CONSUMED_TOPIC);
     }
 
     public void subscribe_to(String topicName) {
@@ -33,16 +32,18 @@ public class KafkaConsumer<T> {
         LOGGER.info("The consumer is now subscribed to {} topic", topicName);
     }
 
-    public ConsumerRecord<String, T> pollMessage(long pollingTimeoutMilliSeconds) {
-        LOGGER.info("Kafka consumer Attempting to poll a message within {} milliseconds", pollingTimeoutMilliSeconds);
-        ConsumerRecords<String, T> records = consumer.poll(pollingTimeoutMilliSeconds);
-        if (records.count() == 0) {
-            LOGGER.error("The consumer could not find messages in the given time interval");
-            return null;
-        }
-        ConsumerRecord<String, T> receivedMessage = records.iterator().next();
-        LOGGER.info("The consumer managed to poll the following message: {}", receivedMessage.value());
-        return receivedMessage;
+    public void run() {
+        Thread consumerThread = new Thread(() -> {
+            LOGGER.info("Kafka consumer Attempting to poll a message within {} milliseconds",Constants.POLLING_TIMEOUT_MS);
+            while(true)
+            {
+                ConsumerRecords<String, T> records = consumer.poll(Constants.POLLING_TIMEOUT_MS);
+                for (ConsumerRecord<String, T> record : records) {
+                    LOGGER.info("The consumer managed to poll the following message: {}", record.value());
+                }
+            }
+        });
+        consumerThread.start();
     }
 
     public void closeConsumer() {

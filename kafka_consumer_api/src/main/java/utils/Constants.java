@@ -7,6 +7,7 @@ public class Constants {
     public static final int MAX_NUMBER_OF_POLLED_MESSAGES = 1;
     public static final String AVRO_DESERIALIZER_PATH = "io.confluent.kafka.serializers.KafkaAvroDeserializer";
     public static final String STRINGS_DESERIALIZER_PATH = "org.apache.kafka.common.serialization.StringDeserializer";
-    public static final String CONSUMED_TOPIC = "test";
-    public static final long POLLING_TIMEOUT_MS = 10000;
+    public static final String SIMPLE_CONSUMED_MESSAGES_TOPIC = "simple-test";
+    public static final String CONSUMED_AVRO_MESSAGES_TOPIC = "avro-test";
+    public static final long POLLING_TIMEOUT_MS = 200;
 }

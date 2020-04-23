@@ -7,6 +7,7 @@ public class KafkaStringConsumer extends KafkaConsumer<String> {
     public KafkaStringConsumer(String broker) {
         super(broker);
         initializeConsumer();
+        this.subscribe_to(Constants.SIMPLE_CONSUMED_MESSAGES_TOPIC);
     }
 
     @Override

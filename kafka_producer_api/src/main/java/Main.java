@@ -9,10 +9,10 @@ public class Main {
         KafkaAvroProducer kafkaAvroProducer = new KafkaAvroProducer(Constants.BROKER,
                 Constants.SCHEMA_REGISTRY_URL);
 
-        kafkaStringProducer.sendMessage(Constants.SENT_MESSAGES_TOPIC, Constants.STRING_MESSAGE_CONTENT);
+        kafkaStringProducer.sendMessage(Constants.SENT_SIMPLE_MESSAGES_TOPIC, Constants.STRING_MESSAGE_CONTENT);
         kafkaStringProducer.closeProducer();
 
-        kafkaAvroProducer.sendMessage(Constants.SENT_MESSAGES_TOPIC, Constants.IDENTIFICATION);
+        kafkaAvroProducer.sendMessage(Constants.SENT_AVRO_MESSAGES_TOPIC, Constants.IDENTIFICATION);
         kafkaAvroProducer.closeProducer();
     }
 }
