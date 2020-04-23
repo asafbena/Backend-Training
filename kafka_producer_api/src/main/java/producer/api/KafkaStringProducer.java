@@ -17,7 +17,7 @@ public class KafkaStringProducer extends KafkaProducer<String> {
     }
 
     @Override
-    public void initializeProducerProperties() {
+    protected void initializeProducerProperties() {
         super.initializeProducerProperties();
         this.producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, Constants.STRINGS_SERIALIZER_PATH);
     }

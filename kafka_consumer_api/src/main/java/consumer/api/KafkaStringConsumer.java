@@ -10,7 +10,7 @@ public class KafkaStringConsumer extends KafkaConsumer<String> {
     }
 
     @Override
-    public void initializeConsumerProperties() {
+    protected void initializeConsumerProperties() {
         super.initializeConsumerProperties();
         this.consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, Constants.STRINGS_DESERIALIZER_PATH);
     }
