@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             KafkaEnvironmentSetUp.setUp();
-            ExerciseKafkaProducer producer = new ExerciseKafkaProducer();
+            MessagesProducer producer = new MessagesProducer();
             producer.sendMessage(Constants.genInstance().getTopicProperties().getName(), 0,
                     Person.newBuilder().build());
             producer.close();

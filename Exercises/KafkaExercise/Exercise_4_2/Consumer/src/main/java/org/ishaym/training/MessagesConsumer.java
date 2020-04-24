@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Properties;
 
-public class ExerciseKafkaConsumer {
-    private static final Logger LOGGER = LogManager.getLogger(ExerciseKafkaConsumer.class);
+public class MessagesConsumer {
+    private static final Logger LOGGER = LogManager.getLogger(MessagesConsumer.class);
 
     private Consumer<Integer, Person> consumer;
 
@@ -34,7 +34,7 @@ public class ExerciseKafkaConsumer {
         return props;
     }
 
-    public ExerciseKafkaConsumer() throws IOException {
+    public MessagesConsumer() throws IOException {
         LOGGER.debug("started creating the kafka consumer");
 
         consumer = new KafkaConsumer<>(createKafkaProperties());

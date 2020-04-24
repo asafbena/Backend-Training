@@ -12,8 +12,8 @@ import org.ishaym.training.config.KafkaProperties;
 import java.io.IOException;
 import java.util.Properties;
 
-public class ExerciseKafkaProducer {
-    private static final Logger LOGGER = LogManager.getLogger(ExerciseKafkaProducer.class);
+public class MessagesProducer {
+    private static final Logger LOGGER = LogManager.getLogger(MessagesProducer.class);
 
     private Producer<Integer, Person> producer;
 
@@ -31,7 +31,7 @@ public class ExerciseKafkaProducer {
         return props;
     }
 
-    public ExerciseKafkaProducer() throws IOException {
+    public MessagesProducer() throws IOException {
         LOGGER.debug("started creating the kafka producer");
 
         producer = new KafkaProducer<>(createKafkaProperties());

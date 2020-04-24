@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             KafkaEnvironmentSetUp.setUp();
-            ExerciseKafkaConsumer consumer = new ExerciseKafkaConsumer();
+            MessagesConsumer consumer = new MessagesConsumer();
             consumer.subscribe(Constants.genInstance().getTopicProperties().getName());
             consumer.consume();
         } catch (InterruptedException e) {
