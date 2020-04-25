@@ -10,4 +10,5 @@ public class Constants {
     public static final String SIMPLE_CONSUMED_MESSAGES_TOPIC = "simple-test";
     public static final String CONSUMED_AVRO_MESSAGES_TOPIC = "avro-test";
     public static final long POLLING_TIMEOUT_MS = 200;
+    public static final boolean SPECIFIC_AFRO_DESERIALIZATION = true;
 }

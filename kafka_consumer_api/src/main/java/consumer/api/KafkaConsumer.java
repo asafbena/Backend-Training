@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.Constants;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.UUID;
@@ -37,9 +38,9 @@ public class KafkaConsumer<T> implements Runnable{
             LOGGER.info("Kafka consumer Attempting to poll a message within {} milliseconds",Constants.POLLING_TIMEOUT_MS);
             while(true)
             {
-                ConsumerRecords<String, T> records = consumer.poll(Constants.POLLING_TIMEOUT_MS);
+                ConsumerRecords<String, T> records = consumer.poll(Duration.ofMillis(Constants.POLLING_TIMEOUT_MS));
                 for (ConsumerRecord<String, T> record : records) {
-                    LOGGER.info("The consumer managed to poll the following message: {}", record.value());
+                    handleReceivedRecord(record);
                 }
             }
         });
@@ -49,6 +50,15 @@ public class KafkaConsumer<T> implements Runnable{
     public void closeConsumer() {
         LOGGER.info("Stopping the consumer activity");
         consumer.close();
+    }
+
+    private void handleReceivedRecord(ConsumerRecord<String, T> record) {
+        T recordContent = record.value();
+        LOGGER.info("The consumer managed to poll the following message: {}", recordContent);
+        additionalRecordHandling(recordContent);
+    }
+
+    protected void additionalRecordHandling(T consumedRecordContent) {
     }
 
     protected void initializeConsumerProperties() {
