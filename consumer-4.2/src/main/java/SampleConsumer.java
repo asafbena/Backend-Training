@@ -19,12 +19,11 @@ public class SampleConsumer implements Runnable {
         consumer = new KafkaConsumer<>(getConsumerProperties());
     }
 
-        public void subscribe(String topicName) {
+    public void subscribe(String topicName) {
         consumer.subscribe(Collections.singleton(topicName));
     }
 
-    private Properties getConsumerProperties()
-    {
+    private Properties getConsumerProperties() {
         Properties properties = new Properties();
         properties.put("bootstrap.servers", Constants.KAFKA_SERVER_URL + ":" + Constants.KAFKA_SERVER_PORT);
         properties.put("client.id", Constants.CLIENT_ID);
