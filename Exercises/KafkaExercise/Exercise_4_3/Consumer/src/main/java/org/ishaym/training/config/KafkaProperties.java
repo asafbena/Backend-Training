@@ -1,20 +1,20 @@
 package org.ishaym.training.config;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class KafkaProperties {
-    private final String bootstrapServer;
-    private final String clientId;
-    private final String schemaRegistryUrl;
 
-    @JsonCreator
-    public KafkaProperties(@JsonProperty("bootstrap.server") final String bootstrapServer,
-                           @JsonProperty("client.id") final String clientId,
-                           @JsonProperty("schema.registry.url") final String schemaRegistryUrl) {
-        this.bootstrapServer = bootstrapServer;
-        this.clientId = clientId;
-        this.schemaRegistryUrl = schemaRegistryUrl;
+    @JsonProperty("schema.registry.url")
+    private String schemaRegistryUrl;
+
+    @JsonProperty("bootstrap.server")
+    private String bootstrapServer;
+
+    @JsonProperty("client.id")
+    private String clientId;
+
+    public String getSchemaRegistryUrl() {
+        return schemaRegistryUrl;
     }
 
     public String getBootstrapServer() {
@@ -25,16 +25,13 @@ public class KafkaProperties {
         return clientId;
     }
 
-    public String getSchemaRegistryUrl() {
-        return schemaRegistryUrl;
-    }
-
     @Override
     public String toString() {
-        return "KafkaProperties{" +
-                "bootstrap.server='" + bootstrapServer + '\'' +
-                ", client.id='" + clientId + '\'' +
-                ", schema.registry.url='" + schemaRegistryUrl + '\'' +
-                '}';
+        return
+                "KafkaProperties{" +
+                        "schema.registry.url = '" + schemaRegistryUrl + '\'' +
+                        ",bootstrap.server = '" + bootstrapServer + '\'' +
+                        ",client.id = '" + clientId + '\'' +
+                        "}";
     }
 }

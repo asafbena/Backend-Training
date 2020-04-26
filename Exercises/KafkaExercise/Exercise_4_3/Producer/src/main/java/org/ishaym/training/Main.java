@@ -15,8 +15,9 @@ public class Main {
         try {
             KafkaEnvironmentSetUp.setUp();
             MessagesProducer producer = new MessagesProducer();
-            producer.sendMessage(Constants.genInstance().getTopicProperties().getName(), 0,
-                    Person.newBuilder().build());
+            producer.sendMessage(Constants.genInstance().getConfigurations().
+                            getTopicProperties().getName(), 0,
+                    new Person("first name", "last name", "Israel", 10, null));
             producer.close();
         } catch (InterruptedException e) {
             LOGGER.fatal(e.getMessage(), e);

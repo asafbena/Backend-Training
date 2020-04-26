@@ -6,28 +6,25 @@
   [
     {
       "name": "firstName",
-      "type": "string",
-      "default": "default"
+      "type": "string"
     },
     {
       "name": "lastName",
-      "type": "string",
-      "default": "default"
+      "type": "string"
     },
     {
       "name": "countryOfBirth",
       "type": "string",
-      "default": "default"
+      "default": "Israel"
     },
     {
       "name": "age",
-      "type": "int",
-      "default": -1
+      "type": "int"
     },
     {
       "name": "petName",
-      "type": "string",
-      "default": "default"
+      "type": ["null", "string"],
+      "default": null
     }
   ]
 }

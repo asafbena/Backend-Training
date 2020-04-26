@@ -1,40 +1,37 @@
 package org.ishaym.training.config;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class KafkaProperties {
-    private final String bootstrapServer;
-    private final String clientId;
-    private final String schemaRegistryUrl;
+public class KafkaProperties{
 
-    @JsonCreator
-    public KafkaProperties(@JsonProperty("bootstrap.server") final String bootstrapServer,
-                           @JsonProperty("client.id") final String clientId,
-                           @JsonProperty("schema.registry.url") final String schemaRegistryUrl) {
-        this.bootstrapServer = bootstrapServer;
-        this.clientId = clientId;
-        this.schemaRegistryUrl = schemaRegistryUrl;
-    }
+	@JsonProperty("schema.registry.url")
+	private String schemaRegistryUrl;
 
-    public String getBootstrapServer() {
-        return bootstrapServer;
-    }
+	@JsonProperty("bootstrap.server")
+	private String bootstrapServer;
 
-    public String getClientId() {
-        return clientId;
-    }
+	@JsonProperty("client.id")
+	private String clientId;
 
-    public String getSchemaRegistryUrl() {
-        return schemaRegistryUrl;
-    }
+	public String getSchemaRegistryUrl(){
+		return schemaRegistryUrl;
+	}
 
-    @Override
-    public String toString() {
-        return "KafkaProperties{" +
-                "bootstrap.server='" + bootstrapServer + '\'' +
-                ", client.id='" + clientId + '\'' +
-                ", schema.registry.url='" + schemaRegistryUrl + '\'' +
-                '}';
-    }
+	public String getBootstrapServer(){
+		return bootstrapServer;
+	}
+
+	public String getClientId(){
+		return clientId;
+	}
+
+	@Override
+ 	public String toString(){
+		return 
+			"KafkaProperties{" + 
+			"schema.registry.url = '" + schemaRegistryUrl + '\'' + 
+			",bootstrap.server = '" + bootstrapServer + '\'' + 
+			",client.id = '" + clientId + '\'' + 
+			"}";
+		}
 }

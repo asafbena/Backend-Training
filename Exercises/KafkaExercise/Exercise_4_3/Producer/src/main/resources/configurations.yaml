@@ -4,3 +4,9 @@ kafkaProperties:
   schema.registry.url: 'http://localhost:8081'
 topicProperties:
   name: 'avro-messages-section-5-3'
+  topicCheckingProperties:
+    numOfAttempts: 5
+    timeBetweenAttemptsInMillis: 1000
+producerProperties:
+  key.serializer: 'org.apache.kafka.common.serialization.IntegerSerializer'
+  value.serializer: 'io.confluent.kafka.serializers.KafkaAvroSerializer'
