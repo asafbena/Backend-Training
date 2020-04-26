@@ -13,11 +13,11 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            KafkaEnvironmentSetUp.setUp();
+            KafkaEnvironmentSetUp.getInstance().setUp();
             MessagesConsumer consumer = new MessagesConsumer();
             consumer.subscribe(
                     Constants.genInstance().getConfigurations().getTopicProperties().getName());
-            consumer.consume();
+            consumer.consume().start();
         } catch (InterruptedException e) {
             LOGGER.fatal(e);
             Thread.currentThread().interrupt();
