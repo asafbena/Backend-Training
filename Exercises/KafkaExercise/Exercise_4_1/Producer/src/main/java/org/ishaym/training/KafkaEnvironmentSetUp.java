@@ -16,23 +16,22 @@ import java.util.concurrent.TimeUnit;
 public class KafkaEnvironmentSetUp {
     private static final Logger LOGGER = LogManager.getLogger(KafkaEnvironmentSetUp.class);
 
-    private static AdminClient adminClient;
+    private static KafkaEnvironmentSetUp kafkaEnvironmentSetUp = null;
 
-    static {
-        try {
-            adminClient = AdminClient.create(createAdminProperties());
-        } catch (IOException e) {
-            LOGGER.fatal(e);
-            System.exit(-1);
+    private AdminClient adminClient;
+
+    private KafkaEnvironmentSetUp() throws IOException {
+        this.adminClient = AdminClient.create(createAdminProperties());
+    }
+
+    public static KafkaEnvironmentSetUp getInstance() throws IOException {
+        if (kafkaEnvironmentSetUp == null) {
+            kafkaEnvironmentSetUp = new KafkaEnvironmentSetUp();
         }
+        return kafkaEnvironmentSetUp;
     }
 
-
-    private KafkaEnvironmentSetUp() {
-
-    }
-
-    private static Properties createAdminProperties() throws IOException {
+    private Properties createAdminProperties() throws IOException {
         LOGGER.debug("started creating the admin properties object");
 
         KafkaProperties kafkaProperties = Constants.genInstance().
@@ -45,7 +44,7 @@ public class KafkaEnvironmentSetUp {
         return props;
     }
 
-    private static boolean isTopicExists()
+    private boolean isTopicExists()
             throws IOException, ExecutionException, InterruptedException {
         LOGGER.debug("checking if topic already exists");
 
@@ -53,7 +52,7 @@ public class KafkaEnvironmentSetUp {
                 Constants.genInstance().getConfigurations().getTopicProperties().getName());
     }
 
-    private static void waitForTopic() throws IOException, ExecutionException,
+    private void waitForTopic() throws IOException, ExecutionException,
             InterruptedException, TopicNotFoundException {
         LOGGER.debug("starting to wait for topic creation");
 
@@ -70,7 +69,7 @@ public class KafkaEnvironmentSetUp {
         throw new TopicNotFoundException();
     }
 
-    public static void setUp() throws IOException, ExecutionException, InterruptedException,
+    public void setUp() throws IOException, ExecutionException, InterruptedException,
             TopicNotFoundException {
         LOGGER.debug("started creating the producer environment");
 

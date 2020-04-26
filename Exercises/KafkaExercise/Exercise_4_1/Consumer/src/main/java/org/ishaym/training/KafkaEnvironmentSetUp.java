@@ -20,25 +20,26 @@ import java.util.concurrent.TimeoutException;
 public class KafkaEnvironmentSetUp {
     private static final Logger LOGGER = LogManager.getLogger(KafkaEnvironmentSetUp.class);
 
-    private static AdminClient adminClient;
+    private static KafkaEnvironmentSetUp kafkaEnvironmentSetUp = null;
 
-    static {
-        try {
-            adminClient = AdminClient.create(createAdminProperties());
-        } catch (IOException e) {
-            LOGGER.fatal(e);
-            System.exit(-1);
+    private AdminClient adminClient;
+
+    private KafkaEnvironmentSetUp() throws IOException {
+        this.adminClient = AdminClient.create(createAdminProperties());
+    }
+
+    public static KafkaEnvironmentSetUp getInstance() throws IOException {
+        if (kafkaEnvironmentSetUp == null) {
+            kafkaEnvironmentSetUp = new KafkaEnvironmentSetUp();
         }
+        return kafkaEnvironmentSetUp;
     }
 
-    private KafkaEnvironmentSetUp() {
-
-    }
-
-    private static Properties createAdminProperties() throws IOException {
+    private Properties createAdminProperties() throws IOException {
         LOGGER.debug("started creating the admin properties object");
 
-        KafkaProperties kafkaProperties = Constants.genInstance().getConfigurations().getKafkaProperties();
+        KafkaProperties kafkaProperties = Constants.genInstance().getConfigurations().
+                getKafkaProperties();
 
         Properties props = new Properties();
         props.put("bootstrap.servers", kafkaProperties.getBootstrapServer());
@@ -47,7 +48,7 @@ public class KafkaEnvironmentSetUp {
         return props;
     }
 
-    private static boolean isTopicExists()
+    private boolean isTopicExists()
             throws ExecutionException, InterruptedException, IOException {
         LOGGER.debug("checking if topic already exists");
 
@@ -55,11 +56,12 @@ public class KafkaEnvironmentSetUp {
                 Constants.genInstance().getConfigurations().getTopicProperties().getName());
     }
 
-    private static void createTopic()
+    private void createTopic()
             throws ExecutionException, InterruptedException, TimeoutException, IOException {
         LOGGER.debug("started creating the new topic");
 
-        TopicProperties topicProperties = Constants.genInstance().getConfigurations().getTopicProperties();
+        TopicProperties topicProperties = Constants.genInstance().getConfigurations().
+                getTopicProperties();
 
         NewTopic newTopic = new NewTopic(topicProperties.getName(),
                 topicProperties.getNumPartitions(), (short) topicProperties.getReplicationFactor());
@@ -69,7 +71,7 @@ public class KafkaEnvironmentSetUp {
                 topicProperties.getCreationTimeoutSeconds(), TimeUnit.SECONDS);
     }
 
-    public static void setUp() throws IOException, ExecutionException, InterruptedException,
+    public void setUp() throws IOException, ExecutionException, InterruptedException,
             TimeoutException {
         LOGGER.debug("started creating the consumer environment");
 

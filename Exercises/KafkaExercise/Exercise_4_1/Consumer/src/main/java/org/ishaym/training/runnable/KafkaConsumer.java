@@ -10,16 +10,16 @@ import org.ishaym.training.common.Constants;
 import java.io.IOException;
 import java.text.MessageFormat;
 
-public class ConsumerAction implements Runnable {
-    private static final Logger LOGGER = LogManager.getLogger(ConsumerAction.class);
+public class KafkaConsumer implements Runnable {
+    private static final Logger LOGGER = LogManager.getLogger(KafkaConsumer.class);
 
     private final Consumer<Integer, String> consumer;
 
-    public ConsumerAction(Consumer<Integer, String> consumer) {
+    public KafkaConsumer(Consumer<Integer, String> consumer) {
         this.consumer = consumer;
     }
 
-    private void action(ConsumerRecords<Integer, String> records) {
+    private void logMessages(ConsumerRecords<Integer, String> records) {
         for (ConsumerRecord<Integer, String> record : records) {
             String output = MessageFormat.format("message key: {0} , message value: {1}",
                     record.key(), record.value());
@@ -33,7 +33,7 @@ public class ConsumerAction implements Runnable {
 
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                action(consumer.poll(Constants.genInstance().getConfigurations().
+                logMessages(consumer.poll(Constants.genInstance().getConfigurations().
                         getConsumerProperties().getPollingTimeoutInMilliSeconds()));
             } catch (IOException e) {
                 LOGGER.fatal(e);

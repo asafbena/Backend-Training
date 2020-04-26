@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.ishaym.training.config.Configurations;
 import org.ishaym.training.config.ConsumerProperties;
 import org.ishaym.training.config.KafkaProperties;
-import org.ishaym.training.runnable.ConsumerAction;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -45,8 +44,7 @@ public class MessagesConsumer {
         consumer.subscribe(Collections.singleton(topic));
     }
 
-    public void consume() {
-        Thread thread = new Thread(new ConsumerAction(consumer));
-        thread.start();
+    public Thread consume() {
+        return new Thread(new org.ishaym.training.runnable.KafkaConsumer(consumer));
     }
 }

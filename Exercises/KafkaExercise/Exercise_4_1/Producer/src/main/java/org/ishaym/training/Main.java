@@ -3,6 +3,7 @@ package org.ishaym.training;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.ishaym.training.common.Constants;
+import org.ishaym.training.defaults.DefaultMessage;
 import org.ishaym.training.exception.TopicNotFoundException;
 
 
@@ -14,10 +15,14 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            KafkaEnvironmentSetUp.setUp();
+            KafkaEnvironmentSetUp.getInstance().setUp();
             MessagesProducer producer = new MessagesProducer();
-            producer.sendMessage(Constants.genInstance().getConfigurations().
-                    getTopicProperties().getName(), 0, "Some Message");
+
+            Constants constants = Constants.genInstance();
+            DefaultMessage defaultMessage = constants.getDefaultMessage();
+
+            producer.sendMessage(constants.getConfigurations().getTopicProperties().getName(),
+                    defaultMessage.getKey(), defaultMessage.getValue());
             producer.close();
         } catch (InterruptedException e) {
             LOGGER.fatal(e);
