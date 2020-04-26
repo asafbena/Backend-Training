@@ -6,11 +6,5 @@ public class Main {
         mySampleConsumer.subscribe(Constants.TOPIC_NAME);
         Thread mySampleConsumerThread = new Thread(mySampleConsumer);
         mySampleConsumerThread.start();
-
-        try {
-            mySampleConsumerThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

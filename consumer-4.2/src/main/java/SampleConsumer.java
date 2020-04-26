@@ -19,29 +19,32 @@ public class SampleConsumer implements Runnable {
         consumer = new KafkaConsumer<>(getConsumerProperties());
     }
 
-        public void subscribe(String topicName) {
+    public void subscribe(String topicName) {
         consumer.subscribe(Collections.singleton(topicName));
     }
 
-    private Properties getConsumerProperties()
-    {
+    private Properties getConsumerProperties() {
         Properties properties = new Properties();
         properties.put("bootstrap.servers", Constants.KAFKA_SERVER_URL + ":" + Constants.KAFKA_SERVER_PORT);
         properties.put("client.id", Constants.CLIENT_ID);
         properties.put("group.id", Constants.GROUP_ID);
-        properties.put("key.deserializer", "org.apache.kafka.common.serialization.LongDeserializer");
-        properties.put("value.deserializer", "io.confluent.kafka.serializers.KafkaAvroDeserializer");
+        properties.put("key.deserializer", Constants.KEY_DESERIALIZER);
+        properties.put("value.deserializer", Constants.VALUE_DESERIALIZER);
         properties.put("schema.registry.url", "http://" + Constants.SCHEMA_REGISTRY_HOST + ":" + Constants.SCHEMA_REGISTRY_PORT);
         return properties;
+    }
+
+    private void pollAndConsumeMessages() {
+        ConsumerRecords<Long, MyIdentity> records = consumer.poll(Constants.CONSUMER_WAITING_DURATION);
+        for (ConsumerRecord<Long, MyIdentity> record : records) {
+            logger.debug("recieved the messege:" + record.value());
+        }
     }
 
     @Override
     public void run() {
         while (true) {
-            ConsumerRecords<Long, MyIdentity> records = consumer.poll(Constants.CONSUMER_WAITING_DURATION);
-            for (ConsumerRecord<Long, MyIdentity> record : records) {
-                logger.debug("recieved the messege:" + record.value());
-            }
+            pollAndConsumeMessages();
         }
     }
 }
