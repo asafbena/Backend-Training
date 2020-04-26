@@ -10,3 +10,6 @@ topicProperties:
 consumerProperties:
   groupId: 'avro-messages-consumer-5-2-group-id'
   pollingTimeoutInMilliSeconds: 100
+  key.deserializer: 'org.apache.kafka.common.serialization.IntegerDeserializer'
+  value.deserializer: 'io.confluent.kafka.serializers.KafkaAvroDeserializer'
+  specific.avro.reader: true

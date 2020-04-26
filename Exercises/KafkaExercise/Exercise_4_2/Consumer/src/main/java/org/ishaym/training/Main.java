@@ -15,7 +15,8 @@ public class Main {
         try {
             KafkaEnvironmentSetUp.setUp();
             MessagesConsumer consumer = new MessagesConsumer();
-            consumer.subscribe(Constants.genInstance().getTopicProperties().getName());
+            consumer.subscribe(
+                    Constants.genInstance().getConfigurations().getTopicProperties().getName());
             consumer.consume();
         } catch (InterruptedException e) {
             LOGGER.fatal(e);

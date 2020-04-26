@@ -1,49 +1,45 @@
 package org.ishaym.training.config;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TopicProperties {
-    private final String name;
-    private final int numPartitions;
-    private final int replicationFactor;
-    private final int creationTimeoutSeconds;
+public class TopicProperties{
 
-    @JsonCreator
-    public TopicProperties(@JsonProperty("name") final String name,
-                           @JsonProperty("numPartitions") final int numPartitions,
-                           @JsonProperty("replicationFactor") final int replicationFactor,
-                           @JsonProperty("creationTimeoutSeconds") final int
-                                   creationTimeoutSeconds) {
-        this.name = name;
-        this.numPartitions = numPartitions;
-        this.replicationFactor = replicationFactor;
-        this.creationTimeoutSeconds = creationTimeoutSeconds;
-    }
+	@JsonProperty("replicationFactor")
+	private int replicationFactor;
 
-    public String getName() {
-        return name;
-    }
+	@JsonProperty("creationTimeoutSeconds")
+	private int creationTimeoutSeconds;
 
-    public int getNumPartitions() {
-        return numPartitions;
-    }
+	@JsonProperty("numPartitions")
+	private int numPartitions;
 
-    public int getReplicationFactor() {
-        return replicationFactor;
-    }
+	@JsonProperty("name")
+	private String name;
 
-    public int getCreationTimeoutSeconds() {
-        return creationTimeoutSeconds;
-    }
+	public int getReplicationFactor(){
+		return replicationFactor;
+	}
 
-    @Override
-    public String toString() {
-        return "TopicProperties{" +
-                "name='" + name + '\'' +
-                ", numPartitions=" + numPartitions +
-                ", replicationFactor=" + replicationFactor +
-                ", creationTimeoutSeconds=" + creationTimeoutSeconds +
-                '}';
-    }
+	public int getCreationTimeoutSeconds(){
+		return creationTimeoutSeconds;
+	}
+
+	public int getNumPartitions(){
+		return numPartitions;
+	}
+
+	public String getName(){
+		return name;
+	}
+
+	@Override
+ 	public String toString(){
+		return 
+			"TopicProperties{" + 
+			"replicationFactor = '" + replicationFactor + '\'' + 
+			",creationTimeoutSeconds = '" + creationTimeoutSeconds + '\'' + 
+			",numPartitions = '" + numPartitions + '\'' + 
+			",name = '" + name + '\'' + 
+			"}";
+		}
 }

@@ -21,20 +21,22 @@ public class ConsumerAction implements Runnable {
         this.consumer = consumer;
     }
 
+    private void action(ConsumerRecords<Integer, Person> records) {
+        for (ConsumerRecord<Integer, Person> record : records) {
+            String output = MessageFormat.format("message key: {0} , message value: {1}",
+                    record.key(), record.value());
+            LOGGER.info(output);
+        }
+    }
+
     @Override
     public void run() {
         LOGGER.debug("running the thread");
 
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                ConsumerRecords<Integer, Person> records = consumer.poll(Duration.ofMillis(
-                        Constants.genInstance().getConsumerProperties().
-                                getPollingTimeoutInMilliSeconds()));
-                for (ConsumerRecord<Integer, Person> record : records) {
-                    String output = MessageFormat.format("message key: {0} , message value: {1}",
-                            record.key(), record.value());
-                    LOGGER.info(output);
-                }
+                action(consumer.poll(Duration.ofMillis(Constants.genInstance().getConfigurations().
+                        getConsumerProperties().getPollingTimeoutInMilliSeconds())));
             } catch (IOException e) {
                 LOGGER.fatal(e);
                 System.exit(-1);
