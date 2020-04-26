@@ -16,14 +16,12 @@ public class KafkaConsumer<T> implements Runnable{
     protected static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 
     private String broker;
-    private Thread consumerThread;
     protected org.apache.kafka.clients.consumer.KafkaConsumer<String, T> consumer;
     protected Properties consumerProperties;
 
     public KafkaConsumer(String broker, String valueDeserializerPath, String subscribedTopic) {
         this.broker = broker;
         initializeConsumer(valueDeserializerPath);
-        buildConsumerThread();
         subscribe_to(subscribedTopic);
     }
 
@@ -38,21 +36,15 @@ public class KafkaConsumer<T> implements Runnable{
     }
 
     public void run() {
-        consumerThread.start();
+        LOGGER.info("Kafka consumer Attempting to poll a message within {} milliseconds", Constants.POLLING_TIMEOUT_MS);
+        while(true) {
+            handleConsumedRecords();
+        }
     }
 
     public void closeConsumer() {
         LOGGER.info("Stopping the consumer activity");
         consumer.close();
-    }
-
-    private void buildConsumerThread() {
-        consumerThread = new Thread(() -> {
-            LOGGER.info("Kafka consumer Attempting to poll a message within {} milliseconds", Constants.POLLING_TIMEOUT_MS);
-            while(true) {
-                handleConsumedRecords();
-            }
-        });
     }
 
     private void handleConsumedRecords() {

@@ -8,7 +8,7 @@ public class Main {
                 Constants.STRINGS_DESERIALIZER_PATH, Constants.STRING_MESSAGES_TOPIC);
         KafkaAvroConsumer kafkaAvroConsumer = new KafkaAvroConsumer(Constants.BROKER);
 
-        kafkaStringConsumer.run();
-        kafkaAvroConsumer.run();
+        new Thread(kafkaStringConsumer).start();
+        new Thread(kafkaAvroConsumer).start();
     }
 }
