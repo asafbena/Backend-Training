@@ -24,6 +24,11 @@
         "name": "petName",
         "type": ["string", "null"],
         "default": null
+    },
+    {
+       "name": "favouriteWatchCompany",
+        "type": ["string", "null"],
+        "default": "Omega"
     }
   ]
 }

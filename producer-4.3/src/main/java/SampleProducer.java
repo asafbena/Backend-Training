@@ -1,7 +1,6 @@
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
@@ -17,8 +16,8 @@ public class SampleProducer implements Runnable {
     private void initProducer() {
         producer = new KafkaProducer<>(getProducerProperties());
     }
-    private Properties getProducerProperties()
-    {
+
+    private Properties getProducerProperties() {
         Properties properties;
         properties = new Properties();
         properties.put("bootstrap.servers", Constants.KAFKA_SERVER_URL + ":" + Constants.KAFKA_SERVER_PORT);

@@ -1,3 +1,4 @@
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -19,12 +20,11 @@ public class SampleConsumer implements Runnable {
         consumer = new KafkaConsumer<>(getConsumerProperties());
     }
 
-        public void subscribe(String topicName) {
+    public void subscribe(String topicName) {
         consumer.subscribe(Collections.singleton(topicName));
     }
 
-    private Properties getConsumerProperties()
-    {
+    private Properties getConsumerProperties() {
         Properties properties = new Properties();
         properties.put("bootstrap.servers", Constants.KAFKA_SERVER_URL + ":" + Constants.KAFKA_SERVER_PORT);
         properties.put("client.id", Constants.CLIENT_ID);
@@ -32,6 +32,7 @@ public class SampleConsumer implements Runnable {
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.LongDeserializer");
         properties.put("value.deserializer", "io.confluent.kafka.serializers.KafkaAvroDeserializer");
         properties.put("schema.registry.url", "http://" + Constants.SCHEMA_REGISTRY_HOST + ":" + Constants.SCHEMA_REGISTRY_PORT);
+        properties.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
         return properties;
     }
 
