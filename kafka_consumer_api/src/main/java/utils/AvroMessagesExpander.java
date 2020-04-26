@@ -3,11 +3,11 @@ package utils;
 import backend.training.ExtendedIdentification;
 import backend.training.Identification;
 
-public class AvroConverter {
-    private AvroConverter() {
+public class AvroMessagesExpander {
+    private AvroMessagesExpander() {
     }
 
-    public static ExtendedIdentification convertToExtendedIdentification(Identification identification) {
+    public static ExtendedIdentification expandToExtendedIdentification(Identification identification) {
         return ExtendedIdentification.newBuilder()
                 .setFirstName(identification.getFirstName())
                 .setLastName(identification.getLastName())

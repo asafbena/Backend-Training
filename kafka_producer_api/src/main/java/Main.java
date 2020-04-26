@@ -1,18 +1,17 @@
-import backend.training.Identification;
 import producer.api.KafkaAvroProducer;
-import producer.api.KafkaStringProducer;
+import producer.api.KafkaProducer;
 import utils.Constants;
 
 public class Main {
     public static void main(String[] args) {
-        KafkaStringProducer kafkaStringProducer = new KafkaStringProducer(Constants.BROKER);
-        KafkaAvroProducer kafkaAvroProducer = new KafkaAvroProducer(Constants.BROKER,
-                Constants.SCHEMA_REGISTRY_URL);
+        KafkaProducer<String> kafkaStringProducer = new KafkaProducer<String>(Constants.BROKER,
+                Constants.STRINGS_SERIALIZER_PATH);
+        KafkaAvroProducer kafkaAvroProducer = new KafkaAvroProducer(Constants.BROKER);
 
-        kafkaStringProducer.sendMessage(Constants.SENT_SIMPLE_MESSAGES_TOPIC, Constants.STRING_MESSAGE_CONTENT);
+        kafkaStringProducer.sendMessage(Constants.STRING_MESSAGES_TOPIC, Constants.STRING_MESSAGE_CONTENT);
         kafkaStringProducer.closeProducer();
 
-        kafkaAvroProducer.sendMessage(Constants.SENT_AVRO_MESSAGES_TOPIC, Constants.IDENTIFICATION);
+        kafkaAvroProducer.sendMessage(Constants.AVRO_MESSAGES_TOPIC, Constants.IDENTIFICATION);
         kafkaAvroProducer.closeProducer();
     }
 }
