@@ -9,3 +9,5 @@ topicProperties:
 consumerProperties:
   groupId: 'string-messages-consumer-group-id'
   pollingTimeoutInMilliSeconds: 100
+  key.deserializer: 'org.apache.kafka.common.serialization.IntegerDeserializer'
+  value.deserializer: 'org.apache.kafka.common.serialization.StringDeserializer'

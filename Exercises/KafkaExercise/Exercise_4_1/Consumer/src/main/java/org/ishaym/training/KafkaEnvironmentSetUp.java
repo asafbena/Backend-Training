@@ -20,6 +20,17 @@ import java.util.concurrent.TimeoutException;
 public class KafkaEnvironmentSetUp {
     private static final Logger LOGGER = LogManager.getLogger(KafkaEnvironmentSetUp.class);
 
+    private static AdminClient adminClient;
+
+    static {
+        try {
+            adminClient = AdminClient.create(createAdminProperties());
+        } catch (IOException e) {
+            LOGGER.fatal(e);
+            System.exit(-1);
+        }
+    }
+
     private KafkaEnvironmentSetUp() {
 
     }
@@ -27,7 +38,7 @@ public class KafkaEnvironmentSetUp {
     private static Properties createAdminProperties() throws IOException {
         LOGGER.debug("started creating the admin properties object");
 
-        KafkaProperties kafkaProperties = Constants.genInstance().getKafkaProperties();
+        KafkaProperties kafkaProperties = Constants.genInstance().getConfigurations().getKafkaProperties();
 
         Properties props = new Properties();
         props.put("bootstrap.servers", kafkaProperties.getBootstrapServer());
@@ -36,43 +47,34 @@ public class KafkaEnvironmentSetUp {
         return props;
     }
 
-    private static AdminClient createAdminClient() throws IOException {
-        LOGGER.debug("started creating the admin client");
-
-        return AdminClient.create(createAdminProperties());
-    }
-
-    private static boolean isTopicExists(AdminClient adminClient)
+    private static boolean isTopicExists()
             throws ExecutionException, InterruptedException, IOException {
         LOGGER.debug("checking if topic already exists");
 
         return adminClient.listTopics().names().get().contains(
-                Constants.genInstance().getTopicProperties().getName());
+                Constants.genInstance().getConfigurations().getTopicProperties().getName());
     }
 
-    private static void createTopic(AdminClient adminClient)
+    private static void createTopic()
             throws ExecutionException, InterruptedException, TimeoutException, IOException {
         LOGGER.debug("started creating the new topic");
 
-        TopicProperties topicProperties = Constants.genInstance().getTopicProperties();
+        TopicProperties topicProperties = Constants.genInstance().getConfigurations().getTopicProperties();
 
         NewTopic newTopic = new NewTopic(topicProperties.getName(),
                 topicProperties.getNumPartitions(), (short) topicProperties.getReplicationFactor());
         final CreateTopicsResult createTopicsResult =
                 adminClient.createTopics(Collections.singleton(newTopic));
         createTopicsResult.values().get(topicProperties.getName()).get(
-                Constants.genInstance().getTopicProperties().getCreationTimeoutSeconds(),
-                TimeUnit.SECONDS);
+                topicProperties.getCreationTimeoutSeconds(), TimeUnit.SECONDS);
     }
 
     public static void setUp() throws IOException, ExecutionException, InterruptedException,
             TimeoutException {
         LOGGER.debug("started creating the consumer environment");
 
-        try (AdminClient adminClient = createAdminClient()) {
-            if (!isTopicExists(adminClient)) {
-                createTopic(adminClient);
-            }
+        if (!isTopicExists()) {
+            createTopic();
         }
     }
 

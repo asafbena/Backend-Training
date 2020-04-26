@@ -1,33 +1,45 @@
 package org.ishaym.training.config;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ConsumerProperties {
-    private final String groupId;
-    private final int pollingTimeoutInMilliSeconds;
 
-    @JsonCreator
-    public ConsumerProperties(@JsonProperty("groupId") final String groupId,
-                              @JsonProperty("pollingTimeoutInMilliSeconds") final int
-                                      pollingTimeoutInMilliSeconds) {
-        this.groupId = groupId;
-        this.pollingTimeoutInMilliSeconds = pollingTimeoutInMilliSeconds;
+    @JsonProperty("key.deserializer")
+    private String keyDeserializer;
+
+    @JsonProperty("value.deserializer")
+    private String valueDeserializer;
+
+    @JsonProperty("pollingTimeoutInMilliSeconds")
+    private int pollingTimeoutInMilliSeconds;
+
+    @JsonProperty("groupId")
+    private String groupId;
+
+    public String getKeyDeserializer() {
+        return keyDeserializer;
     }
 
-    public String getGroupId() {
-        return groupId;
+    public String getValueDeserializer() {
+        return valueDeserializer;
     }
 
     public int getPollingTimeoutInMilliSeconds() {
         return pollingTimeoutInMilliSeconds;
     }
 
+    public String getGroupId() {
+        return groupId;
+    }
+
     @Override
     public String toString() {
-        return "ConsumerProperties{" +
-                "groupId='" + groupId + '\'' +
-                ", pollingTimeoutInMilliSeconds=" + pollingTimeoutInMilliSeconds +
-                '}';
+        return
+                "ConsumerProperties{" +
+                        "key.deserializer = '" + keyDeserializer + '\'' +
+                        ",value.deserializer = '" + valueDeserializer + '\'' +
+                        ",pollingTimeoutInMilliSeconds = '" + pollingTimeoutInMilliSeconds + '\'' +
+                        ",groupId = '" + groupId + '\'' +
+                        "}";
     }
 }

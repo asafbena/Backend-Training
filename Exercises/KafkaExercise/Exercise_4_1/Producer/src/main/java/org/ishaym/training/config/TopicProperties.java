@@ -1,24 +1,29 @@
 package org.ishaym.training.config;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TopicProperties {
-    private final String name;
 
-    @JsonCreator
-    public TopicProperties(@JsonProperty("name") final String name) {
-        this.name = name;
-    }
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("topicCheckingProperties")
+    private TopicCheckingProperties topicCheckingProperties;
 
     public String getName() {
         return name;
     }
 
+    public TopicCheckingProperties getTopicCheckingProperties() {
+        return topicCheckingProperties;
+    }
+
     @Override
     public String toString() {
-        return "TopicProperties{" +
-                "name='" + name + '\'' +
-                '}';
+        return
+                "TopicProperties{" +
+                        "name = '" + name + '\'' +
+                        ",topicCheckingProperties = '" + topicCheckingProperties + '\'' +
+                        "}";
     }
 }

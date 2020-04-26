@@ -5,9 +5,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.ishaym.training.config.Configurations;
-import org.ishaym.training.config.ConsumerProperties;
-import org.ishaym.training.config.KafkaProperties;
-import org.ishaym.training.config.TopicProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,9 +17,7 @@ public class Constants {
 
     private static final String PROPERTIES_FILE = "configurations.yaml";
 
-    private KafkaProperties kafkaProperties;
-    private TopicProperties topicProperties;
-    private ConsumerProperties consumerProperties;
+    private Configurations configurations;
 
 
     private Configurations getConfigurationsFromFile() throws IOException {
@@ -38,11 +33,7 @@ public class Constants {
     private Constants() throws IOException {
         LOGGER.debug("creating the constants object instance");
 
-        Configurations config = getConfigurationsFromFile();
-
-        this.kafkaProperties = config.getKafkaProperties();
-        this.topicProperties = config.getTopicProperties();
-        this.consumerProperties = config.getConsumerProperties();
+        this.configurations = getConfigurationsFromFile();
     }
 
     public static Constants genInstance() throws IOException {
@@ -54,15 +45,7 @@ public class Constants {
         return constants;
     }
 
-    public KafkaProperties getKafkaProperties() {
-        return kafkaProperties;
-    }
-
-    public TopicProperties getTopicProperties() {
-        return topicProperties;
-    }
-
-    public ConsumerProperties getConsumerProperties() {
-        return consumerProperties;
+    public Configurations getConfigurations() {
+        return configurations;
     }
 }

@@ -5,6 +5,9 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.ishaym.training.common.Constants;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.ishaym.training.config.Configurations;
+import org.ishaym.training.config.ConsumerProperties;
+import org.ishaym.training.config.KafkaProperties;
 import org.ishaym.training.runnable.ConsumerAction;
 
 import java.io.IOException;
@@ -19,13 +22,15 @@ public class MessagesConsumer {
     private Properties createKafkaProperties() throws IOException {
         LOGGER.debug("started creating the consumer properties object");
 
-        Constants constants = Constants.genInstance();
+        Configurations configurations = Constants.genInstance().getConfigurations();
+        KafkaProperties kafkaProperties = configurations.getKafkaProperties();
+        ConsumerProperties consumerProperties = configurations.getConsumerProperties();
 
         Properties props = new Properties();
-        props.put("bootstrap.servers", constants.getKafkaProperties().getBootstrapServer());
-        props.put("group.id", constants.getConsumerProperties().getGroupId());
-        props.put("key.deserializer", "org.apache.kafka.common.serialization.IntegerDeserializer");
-        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("bootstrap.servers", kafkaProperties.getBootstrapServer());
+        props.put("group.id", consumerProperties.getGroupId());
+        props.put("key.deserializer", consumerProperties.getKeyDeserializer());
+        props.put("value.deserializer", consumerProperties.getValueDeserializer());
 
         return props;
     }

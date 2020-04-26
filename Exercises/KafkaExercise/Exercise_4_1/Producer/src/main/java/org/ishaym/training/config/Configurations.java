@@ -1,18 +1,17 @@
 package org.ishaym.training.config;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Configurations {
-    private final KafkaProperties kafkaProperties;
-    private final TopicProperties topicProperties;
 
-    @JsonCreator
-    public Configurations(@JsonProperty("kafkaProperties") final KafkaProperties kafkaProperties,
-                          @JsonProperty("topicProperties") final TopicProperties topicProperties) {
-        this.kafkaProperties = kafkaProperties;
-        this.topicProperties = topicProperties;
-    }
+    @JsonProperty("kafkaProperties")
+    private KafkaProperties kafkaProperties;
+
+    @JsonProperty("topicProperties")
+    private TopicProperties topicProperties;
+
+    @JsonProperty("producerProperties")
+    private ProducerProperties producerProperties;
 
     public KafkaProperties getKafkaProperties() {
         return kafkaProperties;
@@ -22,11 +21,17 @@ public class Configurations {
         return topicProperties;
     }
 
+    public ProducerProperties getProducerProperties() {
+        return producerProperties;
+    }
+
     @Override
     public String toString() {
-        return "Configurations{" +
-                "kafkaProperties=" + kafkaProperties +
-                ", topicProperties=" + topicProperties +
-                '}';
+        return
+                "Configurations{" +
+                        "kafkaProperties = '" + kafkaProperties + '\'' +
+                        ",topicProperties = '" + topicProperties + '\'' +
+                        ",producerProperties = '" + producerProperties + '\'' +
+                        "}";
     }
 }
