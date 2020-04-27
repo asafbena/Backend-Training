@@ -38,8 +38,7 @@ public class KafkaEnvironmentSetUp {
     private Properties createAdminProperties() throws IOException {
         LOGGER.debug("started creating the admin properties object");
 
-        KafkaProperties kafkaProperties = Constants.genInstance().getConfigurations().
-                getKafkaProperties();
+        KafkaProperties kafkaProperties = Constants.getKafkaProperties();
 
         Properties props = new Properties();
         props.put("bootstrap.servers", kafkaProperties.getBootstrapServer());
@@ -53,15 +52,14 @@ public class KafkaEnvironmentSetUp {
         LOGGER.debug("checking if topic already exists");
 
         return adminClient.listTopics().names().get().contains(
-                Constants.genInstance().getConfigurations().getTopicProperties().getName());
+                Constants.getTopicProperties().getName());
     }
 
     private void createTopic()
             throws ExecutionException, InterruptedException, TimeoutException, IOException {
         LOGGER.debug("started creating the new topic");
 
-        TopicProperties topicProperties = Constants.genInstance().getConfigurations().
-                getTopicProperties();
+        TopicProperties topicProperties = Constants.getTopicProperties();
 
         NewTopic newTopic = new NewTopic(topicProperties.getName(),
                 topicProperties.getNumPartitions(), (short) topicProperties.getReplicationFactor());

@@ -3,7 +3,6 @@ package org.ishaym.training;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.ishaym.training.common.Constants;
-import org.ishaym.training.defaults.DefaultMessage;
 import org.ishaym.training.defaults.Value;
 import org.ishaym.training.exception.TopicNotFoundException;
 
@@ -17,12 +16,10 @@ public class Main {
         try {
             KafkaEnvironmentSetUp.getInstance().setUp();
             MessagesProducer producer = new MessagesProducer();
-            Constants constants = Constants.genInstance();
-            DefaultMessage defaultMessage = constants.getDefaultMessage();
-            Value messageValue = defaultMessage.getValue();
+            Value messageValue = Constants.getDefaultMessageValue();
             producer.sendMessage(
-                    constants.getConfigurations().getTopicProperties().getName(),
-                    0,
+                    Constants.getTopicProperties().getName(),
+                    Constants.getDefaultMessageKey(),
                     new Person(messageValue.getFirstName(), messageValue.getLastName(),
                             messageValue.getCountryOfBirth(), messageValue.getAge(),
                             messageValue.getPetName()));
