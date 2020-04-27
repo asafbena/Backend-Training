@@ -4,8 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.ishaym.training.config.Configurations;
+import org.ishaym.training.config.*;
 import org.ishaym.training.defaults.DefaultMessage;
+import org.ishaym.training.defaults.Value;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +22,6 @@ public class Constants {
 
     private Configurations configurations;
     private DefaultMessage defaultMessage;
-
 
     private <T> T getDataFromYAMLFile(String fileName, Class<T> valueType) throws IOException {
         LOGGER.debug("started reading properties from the yaml file");
@@ -40,7 +40,7 @@ public class Constants {
         this.defaultMessage = getDataFromYAMLFile(DEFAULT_MESSAGE_FILE, DefaultMessage.class);
     }
 
-    public static Constants genInstance() throws IOException {
+    private static Constants getInstance() throws IOException {
         LOGGER.debug("getting the constants object instance");
 
         if (constants == null) {
@@ -49,12 +49,36 @@ public class Constants {
         return constants;
     }
 
-    public Configurations getConfigurations() {
-        return configurations;
+    private static Configurations getConfigurations() throws IOException {
+        return getInstance().configurations;
     }
 
-    public DefaultMessage getDefaultMessage() {
-        return defaultMessage;
+    private static DefaultMessage getDefaultMessage() throws IOException {
+        return getInstance().defaultMessage;
+    }
+
+    public static KafkaProperties getKafkaProperties() throws IOException {
+        return getConfigurations().getKafkaProperties();
+    }
+
+    public static ProducerProperties getProducerProperties() throws IOException {
+        return getConfigurations().getProducerProperties();
+    }
+
+    public static TopicProperties getTopicProperties() throws IOException {
+        return getConfigurations().getTopicProperties();
+    }
+
+    public static TopicCheckingProperties getTopicCheckingProperties() throws IOException {
+        return getTopicProperties().getTopicCheckingProperties();
+    }
+
+    public static int getDefaultMessageKey() throws IOException {
+        return getDefaultMessage().getKey();
+    }
+
+    public static Value getDefaultMessageValue() throws IOException {
+        return getDefaultMessage().getValue();
     }
 
 }

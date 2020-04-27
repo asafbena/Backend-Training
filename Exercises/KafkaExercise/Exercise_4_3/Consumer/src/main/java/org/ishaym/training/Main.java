@@ -2,7 +2,6 @@ package org.ishaym.training;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.ishaym.training.common.Constants;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -14,10 +13,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             KafkaEnvironmentSetUp.getInstance().setUp();
-            MessagesConsumer consumer = new MessagesConsumer();
-            consumer.subscribe(Constants.genInstance().getConfigurations().getTopicProperties()
-                    .getName());
-            consumer.consume().start();
+            new Thread(new MessagesConsumer()).start();
         } catch (InterruptedException e) {
             LOGGER.fatal(e);
             Thread.currentThread().interrupt();
