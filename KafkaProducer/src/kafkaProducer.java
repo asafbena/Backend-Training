@@ -4,25 +4,26 @@ import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import java.util.Properties;
 import java.io.*;
+import java.util.Scanner;
 
-public class kafkaProducer implements Runnable{
+public class kafkaProducer{
 
     private String TOPIC;
     private String BOOTSTRAP_SERVERS;
     private Properties props;
-    private String filename;
+    private Scanner scanner;
 
     Properties createProducerProperties(){
         Properties tmpProps = new Properties();
         tmpProps.put("bootstrap.servers", BOOTSTRAP_SERVERS);
-        tmpProps.put("acks", "all");
-        tmpProps.put("compression.type", "snappy");
-        tmpProps.put("retries", 1);
-        tmpProps.put("batch.size", 16384);
-        tmpProps.put("linger.ms", 5);
-        tmpProps.put("buffer.memory", 33554432);
-        tmpProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        tmpProps.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        tmpProps.put("acks", scanner.next());
+        tmpProps.put("compression.type", scanner.next());
+        tmpProps.put("retries", Integer.parseInt(scanner.next()));
+        tmpProps.put("batch.size", Integer.parseInt(scanner.next()));
+        tmpProps.put("linger.ms", Integer.parseInt(scanner.next()));
+        tmpProps.put("buffer.memory", Integer.parseInt(scanner.next()));
+        tmpProps.put("key.serializer", scanner.next());
+        tmpProps.put("value.serializer", scanner.next());
         return tmpProps;
     }
 
@@ -31,23 +32,25 @@ public class kafkaProducer implements Runnable{
         return new KafkaProducer<>(props);
     }
 
-    public kafkaProducer(String file_name){
-        TOPIC = "test";
-        BOOTSTRAP_SERVERS = "localhost:9092";
-        filename=file_name;
+    public kafkaProducer(){
+        try {
+            scanner = new Scanner(new File("constants.txt"));
+        }
+        catch(Exception e){
+            System.out.println("Error happened: "+e.getMessage());
+        }
+        scanner = new Scanner(scanner.nextLine());
+        TOPIC = scanner.next();
+        BOOTSTRAP_SERVERS = scanner.next();
+
     }
 
-    void runProducer(){
-        String message;
+    void runProducer(String message){
         ProducerRecord<String, String> record=null;
         try{
-            FileReader reader = new FileReader(filename);
-            BufferedReader line_reader=new BufferedReader(reader);
             final Producer<String,String> producer = createProducer();
-            while((message = line_reader.readLine()) != null) {
-                record = new ProducerRecord<>(TOPIC, message);
-                producer.send(record);
-            }
+            record = new ProducerRecord<>(TOPIC, message);
+            producer.send(record);
             producer.flush();
             producer.close();
         }
@@ -56,9 +59,6 @@ public class kafkaProducer implements Runnable{
             return;
         }
     }
-        public void run(){
-            runProducer();
-        }
 }
 
 
