@@ -6,7 +6,6 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.ishaym.training.common.Constants;
-import org.ishaym.training.config.Configurations;
 import org.ishaym.training.config.KafkaProperties;
 import org.ishaym.training.config.ProducerProperties;
 
@@ -16,14 +15,13 @@ import java.util.Properties;
 public class MessagesProducer {
     private static final Logger LOGGER = LogManager.getLogger(MessagesProducer.class);
 
-    private Producer<Integer, String> producer;
+    private final Producer<Integer, String> producer;
 
-    private Properties createKafkaProperties() throws IOException {
+    private static Properties createKafkaProperties() throws IOException {
         LOGGER.debug("started creating the producer properties object");
 
-        Configurations configurations = Constants.genInstance().getConfigurations();
-        KafkaProperties kafkaProperties = configurations.getKafkaProperties();
-        ProducerProperties producerProperties = configurations.getProducerProperties();
+        KafkaProperties kafkaProperties = Constants.getKafkaProperties();
+        ProducerProperties producerProperties = Constants.getProducerProperties();
 
         Properties props = new Properties();
         props.put("bootstrap.servers", kafkaProperties.getBootstrapServer());
@@ -34,9 +32,13 @@ public class MessagesProducer {
     }
 
     public MessagesProducer() throws IOException {
+        this(new KafkaProducer<>(createKafkaProperties()));
+    }
+
+    public MessagesProducer(Producer<Integer, String> producer) {
         LOGGER.debug("started creating the kafka producer");
 
-        producer = new KafkaProducer<>(createKafkaProperties());
+        this.producer = producer;
     }
 
     public void close() {

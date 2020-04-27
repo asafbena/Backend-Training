@@ -18,10 +18,9 @@ public class Main {
             KafkaEnvironmentSetUp.getInstance().setUp();
             MessagesProducer producer = new MessagesProducer();
 
-            Constants constants = Constants.genInstance();
-            DefaultMessage defaultMessage = constants.getDefaultMessage();
+            DefaultMessage defaultMessage = Constants.getDefaultMessage();
 
-            producer.sendMessage(constants.getConfigurations().getTopicProperties().getName(),
+            producer.sendMessage(Constants.getTopicProperties().getName(),
                     defaultMessage.getKey(), defaultMessage.getValue());
             producer.close();
         } catch (InterruptedException e) {
