@@ -22,7 +22,7 @@ public class TestKafkaConsumer {
             , TestsConstants.EMBEDDED_CONSUMER_AUTO_OFFSET_RESET_PROPERTY}
             , keyDeserializerClass = StringDeserializer.class
             , valueDeserializerClass = StringDeserializer.class)
-                                                            org.apache.kafka.clients.consumer.KafkaConsumer<String, String> consumer) {
+            org.apache.kafka.clients.consumer.KafkaConsumer<String, String> consumer) {
         KafkaConsumer<String> kafkaConsumer = new KafkaConsumer<String>(consumer, TestsConstants.TEST_TOPIC,
                 TestsConstants.EMBEDDED_CONSUMER_POLLING_TIMEOUT_MS, TestsConstants.IS_TESTING_MODE);
         producer.send(new ProducerRecord<String, String>(TestsConstants.TEST_TOPIC,
