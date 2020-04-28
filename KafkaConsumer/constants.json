@@ -1,0 +1,14 @@
+[
+  {
+    "constants":
+    {
+      "TOPIC": "test",
+      "BOOTSTRAP_SERVERS": "localhost:9092",
+      "group.id":"recordConsumerGroup",
+      "max.poll.records":"10",
+      "key.deserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+      "value.deserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+      "poll_time": "1000"
+    }
+  }
+]

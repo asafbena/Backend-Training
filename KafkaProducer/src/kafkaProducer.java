@@ -1,55 +1,35 @@
-
 import org.apache.kafka.clients.producer.*;
-import org.apache.kafka.common.serialization.LongSerializer;
-import org.apache.kafka.common.serialization.StringSerializer;
 import java.util.Properties;
-import java.io.*;
-import java.util.Scanner;
+
 
 public class kafkaProducer{
-
-    private String TOPIC;
-    private String BOOTSTRAP_SERVERS;
     private Properties props;
-    private Scanner scanner;
+    private Producer<String,String> producer;
+    private producerConstants constants;
 
-    Properties createProducerProperties(){
-        Properties tmpProps = new Properties();
-        tmpProps.put("bootstrap.servers", BOOTSTRAP_SERVERS);
-        tmpProps.put("acks", scanner.next());
-        tmpProps.put("compression.type", scanner.next());
-        tmpProps.put("retries", Integer.parseInt(scanner.next()));
-        tmpProps.put("batch.size", Integer.parseInt(scanner.next()));
-        tmpProps.put("linger.ms", Integer.parseInt(scanner.next()));
-        tmpProps.put("buffer.memory", Integer.parseInt(scanner.next()));
-        tmpProps.put("key.serializer", scanner.next());
-        tmpProps.put("value.serializer", scanner.next());
-        return tmpProps;
-    }
-
-    private Producer<String, String> createProducer() {
-        props=createProducerProperties();
-        return new KafkaProducer<>(props);
+    private void setProps(){
+        props = new Properties();
+        props.put("bootstrap.servers", constants.BOOTSTRAP_SERVERS);
+        props.put("acks",constants.acks);
+        props.put("compression.type",constants.compression);
+        props.put("retries",constants.retries);
+        props.put("batch.size",constants.batch);
+        props.put("linger.ms",constants.linger);
+        props.put("buffer.memory",constants.buffer);
+        props.put("key.serializer",constants.key);
+        props.put("value.serializer",constants.value);
     }
 
     public kafkaProducer(){
-        try {
-            scanner = new Scanner(new File("constants.txt"));
-        }
-        catch(Exception e){
-            System.out.println("Error happened: "+e.getMessage());
-        }
-        scanner = new Scanner(scanner.nextLine());
-        TOPIC = scanner.next();
-        BOOTSTRAP_SERVERS = scanner.next();
-
+        constants = new producerConstants("constants.yaml");
+        setProps();
+        producer = new KafkaProducer<>(props);
     }
 
-    void runProducer(String message){
+    public void runProducer(String message){
         ProducerRecord<String, String> record=null;
         try{
-            final Producer<String,String> producer = createProducer();
-            record = new ProducerRecord<>(TOPIC, message);
+            record = new ProducerRecord<>(constants.TOPIC, message);
             producer.send(record);
             producer.flush();
             producer.close();

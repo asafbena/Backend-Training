@@ -1,0 +1,7 @@
+TOPIC: "test"
+BOOTSTRAP_SERVERS: "localhost:9092"
+group: "recordConsumerGroup"
+max: 10
+key: "org.apache.kafka.common.serialization.StringDeserializer"
+value: "org.apache.kafka.common.serialization.StringDeserializer"
+poll_time: 1000

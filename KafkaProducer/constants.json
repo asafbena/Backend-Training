@@ -1,0 +1,17 @@
+[
+  {
+    "constants":
+    {
+      "TOPIC": "test",
+      "BOOTSTRAP_SERVERS": "localhost:9092",
+      "acks": "all",
+      "compression.type": "snappy",
+      "retries": "1",
+      "batch.size": "16384",
+      "linger.ms": "5",
+      "buffer.memory": "33554432",
+      "key.serializer": "org.apache.kafka.common.serialization.StringSerializer",
+      "value.serializer": "org.apache.kafka.common.serialization.StringSerializer"
+    }
+  }
+]
