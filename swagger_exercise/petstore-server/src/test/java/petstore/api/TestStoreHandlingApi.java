@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 public class TestStoreHandlingApi {
-    private JSONParser jsonParser = new JSONParser();
     private ArrayList<Order> orders = new ArrayList<Order>();
     private StoreHandlingApi storeHandlingApi;
 
@@ -55,7 +54,7 @@ public class TestStoreHandlingApi {
     }
 
     @Test
-    public void testFoo2() {
+    public void testGetInventory() {
         Map<String, Integer> inventoryMap = storeHandlingApi.getInventory().getBody();
         assertInventoryQuantityByStatus(TestsConstants.NUMBER_OF_INVENTORY_APPROVED_ORDERS, inventoryMap,
                 Order.StatusEnum.APPROVED);
