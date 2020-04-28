@@ -1,16 +1,10 @@
 package producer.api;
 
 import org.apache.avro.specific.SpecificRecord;
-import utils.Constants;
+import org.apache.kafka.clients.producer.Producer;
 
 public class KafkaAvroProducer extends KafkaProducer<SpecificRecord> {
-    public KafkaAvroProducer(String broker) {
-        super(broker, Constants.AVRO_SERIALIZER_PATH);
-    }
-
-    @Override
-    protected void initializeProducerProperties(String valueDeserializerPath) {
-        super.initializeProducerProperties(valueDeserializerPath);
-        producerProperties.put(Constants.SCHEMA_REGISTRY_URL_COMPONENT_NAME, Constants.SCHEMA_REGISTRY_URL);
+    public KafkaAvroProducer(Producer<String, SpecificRecord> producer) {
+        super(producer);
     }
 }

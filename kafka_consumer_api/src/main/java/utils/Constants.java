@@ -9,6 +9,7 @@ public class Constants {
     public static final String STRINGS_DESERIALIZER_PATH = "org.apache.kafka.common.serialization.StringDeserializer";
     public static final String STRING_MESSAGES_TOPIC = "string-messages-test-topic";
     public static final String AVRO_MESSAGES_TOPIC = "avro-messages-test-topic";
+    public static final String SPECIFIC_AVRO_READER_CONFIG = "specific.avro.reader";
     public static final long POLLING_TIMEOUT_MS = 200;
     public static final boolean SPECIFIC_AFRO_DESERIALIZATION = true;
 }
