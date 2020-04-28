@@ -32,15 +32,15 @@ public class PetHandlingApi implements PetApi {
     @RequestMapping(value = "/pet/findByStatus",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    public ResponseEntity<List<Pet>> findPetsByStatus(@NotNull @ApiParam(value = "Status values that need to be considered for filter", required = true, allowableValues = "available, pending, sold") @Valid @RequestParam(value = "status", required = true) List<String> status) {
+    public ResponseEntity<List<Pet>> findPetsByStatus(@NotNull @ApiParam(value = "Status values that need to be considered for filter", required = true, allowableValues = "available, pending, sold") @Valid @RequestParam(value = "status", required = true) List<String> statuses) {
         ArrayList<Pet> filteredPets = new ArrayList<Pet>();
-        for (String singleStatus: status) {
+        for (String status: statuses) {
             try {
-                Pet.StatusEnum.valueOf(singleStatus.toUpperCase());
+                Pet.StatusEnum.valueOf(status.toUpperCase());
             } catch (IllegalArgumentException e) {
                 return new ResponseEntity<List<Pet>>(HttpStatus.BAD_REQUEST);
             }
-            updateFilteredPetsByStatus(filteredPets, singleStatus);
+            updateFilteredPetsByStatus(filteredPets, status);
         }
         return new ResponseEntity<List<Pet>>(filteredPets, HttpStatus.OK);
     }
