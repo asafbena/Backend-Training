@@ -35,6 +35,12 @@ public class TestPetHandlingApi {
     }
 
     @Test
+    public void testGetPetByIdSuccessfulRequestStatusCode() {
+        ResponseEntity<Pet> responseEntity = petHandlingApi.getPetById(TestsConstants.EXISTING_PET_ID);
+        Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
     public void testGetPetById() {
         Pet filteredPet = petHandlingApi.getPetById(TestsConstants.EXISTING_PET_ID).getBody();
         Pet expectedPet = DataExtractionUtils.extractPetData(TestsConstants.PET_DATA_BY_ID);
@@ -45,6 +51,13 @@ public class TestPetHandlingApi {
     public void testGetPetsByInvalidStatus() {
         ResponseEntity<List<Pet>> responseEntity = petHandlingApi.findPetsByStatus(TestsConstants.INVALID_PET_STATUSES);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void testFindPetsByStatusSuccessfulRequestStatusCode() {
+        ResponseEntity<List<Pet>> responseEntity = petHandlingApi.findPetsByStatus(
+                TestsConstants.EXISTING_PET_STATUSES);
+        Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test

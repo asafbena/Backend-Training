@@ -1,7 +1,5 @@
 package petstore.api;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,11 +9,8 @@ import petstore.model.Order;
 import utils.DataExtractionUtils;
 import utils.TestsConstants;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class TestStoreHandlingApi {
@@ -25,6 +20,12 @@ public class TestStoreHandlingApi {
     public TestStoreHandlingApi() {
         buildStoreDB();
         storeHandlingApi = new StoreHandlingApi(orders);
+    }
+
+    @Test
+    public void testGetOrderByIdSuccessfulRequestStatusCode() {
+        ResponseEntity<Order> responseEntity = storeHandlingApi.getOrderById(TestsConstants.EXISTING_ORDER_ID);
+        Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
@@ -51,6 +52,12 @@ public class TestStoreHandlingApi {
     public void testOrderWithIdOfNotFoundOrder() {
         ResponseEntity<Order> responseEntity = storeHandlingApi.getOrderById(TestsConstants.NOT_FOUND_ORDER_ID);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void testGetInventoryStatusCode() {
+        ResponseEntity<Map<String, Integer>> responseEntity = storeHandlingApi.getInventory();
+        Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
