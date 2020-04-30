@@ -1,0 +1,11 @@
+kafkaProperties:
+  bootstrap.server: 'localhost:9092'
+  client.id: 'producer-client-id'
+topicProperties:
+  name: 'string-messages'
+  topicCheckingProperties:
+    numOfAttempts: 5
+    timeBetweenAttemptsInMillis: 1000
+producerProperties:
+  key.serializer: 'org.apache.kafka.common.serialization.IntegerSerializer'
+  value.serializer: 'org.apache.kafka.common.serialization.StringSerializer'
