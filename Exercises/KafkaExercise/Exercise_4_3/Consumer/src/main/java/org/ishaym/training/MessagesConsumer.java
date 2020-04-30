@@ -3,38 +3,18 @@ package org.ishaym.training;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.ishaym.training.common.Constants;
-import org.ishaym.training.config.ConsumerProperties;
-import org.ishaym.training.config.KafkaProperties;
+
 
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.Properties;
 
 public class MessagesConsumer implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger(MessagesConsumer.class);
-
-    private static Properties createKafkaProperties() throws IOException {
-        LOGGER.debug("started creating the consumer properties object");
-
-        KafkaProperties kafkaProperties = Constants.getKafkaProperties();
-        ConsumerProperties consumerProperties = Constants.getConsumerProperties();
-
-        Properties props = new Properties();
-        props.put("bootstrap.servers", kafkaProperties.getBootstrapServer());
-        props.put("schema.registry.url", kafkaProperties.getSchemaRegistryUrl());
-        props.put("group.id", consumerProperties.getGroupId());
-        props.put("key.deserializer", consumerProperties.getKeyDeserializer());
-        props.put("value.deserializer", consumerProperties.getValueDeserializer());
-        props.put("specific.avro.reader", consumerProperties.isSpecificAvroReader());
-
-        return props;
-    }
 
     private final Consumer<Integer, Person> consumer;
 
@@ -46,20 +26,21 @@ public class MessagesConsumer implements Runnable {
         }
     }
 
-    public MessagesConsumer() throws IOException {
-        this(new KafkaConsumer<>(createKafkaProperties()));
-    }
-
-    public MessagesConsumer(Consumer<Integer, Person> consumer) throws IOException {
-        LOGGER.debug("started creating the kafka consumer");
+    public MessagesConsumer(Consumer<Integer, Person> consumer) {
+        LOGGER.info("started creating the kafka consumer");
 
         this.consumer = consumer;
-        this.consumer.subscribe(Collections.singleton(Constants.getTopicProperties().getName()));
+    }
+
+    public void subscribe(String topic) {
+        LOGGER.info("subscribing to the given topic");
+
+        consumer.subscribe(Collections.singleton(topic));
     }
 
     @Override
     public void run() {
-        LOGGER.debug("running the thread");
+        LOGGER.info("running the data consumption thread");
 
         while (!Thread.currentThread().isInterrupted()) {
             try {

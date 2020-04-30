@@ -2,8 +2,10 @@ package org.ishaym.training;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.ishaym.training.common.ConstantBuilds;
 import org.ishaym.training.common.Constants;
-import org.ishaym.training.defaults.Value;
+import org.ishaym.training.config.TopicCheckingProperties;
+import org.ishaym.training.config.TopicProperties;
 import org.ishaym.training.exception.TopicNotFoundException;
 
 import java.io.IOException;
@@ -14,16 +16,36 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            KafkaEnvironmentSetUp.getInstance().setUp();
-            MessagesProducer producer = new MessagesProducer();
-            Value messageValue = Constants.getDefaultMessageValue();
+            LOGGER.info("starting the program");
+
+            LOGGER.debug("starting creating the admin client for environment setting");
+            KafkaEnvironmentSetUp kafkaEnvironmentSetUp = new KafkaEnvironmentSetUp(
+                    ConstantBuilds.buildAdminClientFromConstants());
+
+            LOGGER.debug("fetching topic data");
+            TopicProperties topicProperties = Constants.getTopicProperties();
+            TopicCheckingProperties topicCheckingProperties = topicProperties.
+                    getTopicCheckingProperties();
+
+            LOGGER.debug("starting to check whether requested topic exists on kafka");
+            kafkaEnvironmentSetUp.waitForTopic(topicProperties.getName(),
+                    topicCheckingProperties.getNumOfAttempts(),
+                    topicCheckingProperties.getTimeBetweenAttemptsInMillis());
+
+            LOGGER.debug("starting to build the messages producer");
+            MessagesProducer producer = new MessagesProducer(
+                    ConstantBuilds.buildProducerFromConstants());
+
+            LOGGER.debug("starting to send a message from the messages producer");
             producer.sendMessage(
                     Constants.getTopicProperties().getName(),
                     Constants.getDefaultMessageKey(),
-                    new Person(messageValue.getFirstName(), messageValue.getLastName(),
-                            messageValue.getCountryOfBirth(), messageValue.getAge(),
-                            messageValue.getPetName()));
+                    ConstantBuilds.buildPersonFromConstants());
+
+            LOGGER.debug("message sent, closing the messages producer");
             producer.close();
+
+            LOGGER.debug("producer closed and program finished");
         } catch (InterruptedException e) {
             LOGGER.fatal(e.getMessage(), e);
             Thread.currentThread().interrupt();
