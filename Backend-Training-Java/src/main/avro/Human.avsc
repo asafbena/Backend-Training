@@ -1,0 +1,29 @@
+{
+  "name": "Human",
+  "type": "record",
+  "namespace": "org.example",
+  "fields": [
+    {
+      "name": "firstname",
+      "type": "string"
+    },
+    {
+      "name": "lastname",
+      "type": "string"
+    },
+    {
+      "name": "birthplace",
+      "type": "string",
+      "default": "Israel"
+    },
+    {
+      "name": "age",
+      "type": "long"
+    },
+    {
+      "name": "petname",
+      "type": ["null", "string"],
+      "default": null
+    }
+  ]
+}
