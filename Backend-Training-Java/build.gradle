@@ -1,17 +1,41 @@
-plugins {
-    id 'java'
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.commercehub.gradle.plugin:gradle-avro-plugin:0.9.1"
+        classpath 'org.apache.avro:avro-compiler:1.7.1'
+    }
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+plugins {
+    id 'java'
+    id "com.commercehub.gradle.plugin.avro" version "0.9.1"
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'idea'
+apply plugin: 'application'
+apply plugin: "com.commercehub.gradle.plugin.avro"
+
+version = 'sampleavroexercise'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    jcenter()
+    maven {
+        url "http://packages.confluent.io/maven/"
+    }
 }
 
 dependencies {
     compile 'org.apache.kafka:kafka-clients:0.11.0.0'
     compile 'ch.qos.logback:logback-classic:1.2.2'
+    compile "org.apache.avro:avro:1.9.2"
+    compile 'io.confluent:kafka-avro-serializer:5.5.0'
 }
