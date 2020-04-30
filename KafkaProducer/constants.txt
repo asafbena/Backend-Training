@@ -1,0 +1,1 @@
+test localhost:9092 all snappy 1 16384 5 33554432 org.apache.kafka.common.serialization.StringSerializer org.apache.kafka.common.serialization.StringSerializer

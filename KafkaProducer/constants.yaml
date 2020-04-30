@@ -1,0 +1,10 @@
+BOOTSTRAP_SERVERS: "localhost:9092"
+TOPIC: "test"
+ACKS: "all"
+COMPRESSION: "snappy"
+RETRIES: 1
+BATCH: 16384
+LINGER: 5
+BUFFER: 33554432
+KEY: "org.apache.kafka.common.serialization.StringSerializer"
+VALUE: "org.apache.kafka.common.serialization.StringSerializer"
