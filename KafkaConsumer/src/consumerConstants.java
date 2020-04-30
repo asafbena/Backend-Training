@@ -6,11 +6,11 @@ public class consumerConstants {
 
     public String TOPIC;
     public String BOOTSTRAP_SERVERS;
-    public String group;
-    public int max;
-    public String key;
-    public String value;
-    public Integer poll_time;
+    public String GROUP;
+    public int MAX;
+    public String KEY;
+    public String VALUE;
+    public Integer POLL_TIME;
 
     public consumerConstants(){
 
@@ -19,15 +19,15 @@ public class consumerConstants {
     public consumerConstants(String filename){
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         try {
-            consumerConstants tmp = new consumerConstants();
-            tmp = mapper.readValue(new File(filename), consumerConstants.class);
-            group=tmp.group;
-            max=tmp.max;
-            BOOTSTRAP_SERVERS=tmp.BOOTSTRAP_SERVERS;
-            key=tmp.key;
-            TOPIC=tmp.TOPIC;
-            value=tmp.value;
-            poll_time=tmp.poll_time;
+            consumerConstants PROPS_FROM_FILE = new consumerConstants();
+            PROPS_FROM_FILE = mapper.readValue(new File(filename), consumerConstants.class);
+            GROUP=PROPS_FROM_FILE.GROUP;
+            MAX=PROPS_FROM_FILE.MAX;
+            BOOTSTRAP_SERVERS=PROPS_FROM_FILE.BOOTSTRAP_SERVERS;
+            KEY=PROPS_FROM_FILE.KEY;
+            TOPIC=PROPS_FROM_FILE.TOPIC;
+            VALUE=PROPS_FROM_FILE.VALUE;
+            POLL_TIME=PROPS_FROM_FILE.POLL_TIME;
         }
         catch(Exception e){
             System.out.println("Error happened: "+e.getMessage());

@@ -1,6 +1,6 @@
 [
   {
-    "constants":
+    "kafkaProperties":
     {
       "TOPIC": "test",
       "BOOTSTRAP_SERVERS": "localhost:9092",

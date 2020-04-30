@@ -5,14 +5,14 @@ import java.io.File;
 public class producerConstants {
     public String TOPIC;
     public String BOOTSTRAP_SERVERS;
-    public String acks;
-    public String compression;
-    public Integer retries;
-    public Integer batch;
-    public Long linger;
-    public Long buffer;
-    public String key;
-    public String value;
+    public String ACKS;
+    public String COMPRESSION;
+    public Integer RETRIES;
+    public Integer BATCH;
+    public Long LINGER;
+    public Long BUFFER;
+    public String KEY;
+    public String VALUE;
 
     public producerConstants(){
 
@@ -21,18 +21,18 @@ public class producerConstants {
     public producerConstants(String filename){
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         try {
-            producerConstants tmp = new producerConstants();
-            tmp = mapper.readValue(new File(filename), producerConstants.class);
-            acks=tmp.acks;
-            batch=tmp.batch;
-            BOOTSTRAP_SERVERS=tmp.BOOTSTRAP_SERVERS;
-            buffer=tmp.buffer;
-            compression=tmp.compression;
-            key=tmp.key;
-            linger=tmp.linger;
-            retries=tmp.retries;
-            TOPIC=tmp.TOPIC;
-            value=tmp.value;
+            producerConstants PROPS_FROM_FILE = new producerConstants();
+            PROPS_FROM_FILE = mapper.readValue(new File(filename), producerConstants.class);
+            ACKS=PROPS_FROM_FILE.ACKS;
+            BATCH=PROPS_FROM_FILE.BATCH;
+            BOOTSTRAP_SERVERS=PROPS_FROM_FILE.BOOTSTRAP_SERVERS;
+            BUFFER=PROPS_FROM_FILE.BUFFER;
+            COMPRESSION=PROPS_FROM_FILE.COMPRESSION;
+            KEY=PROPS_FROM_FILE.KEY;
+            LINGER=PROPS_FROM_FILE.LINGER;
+            RETRIES=PROPS_FROM_FILE.RETRIES;
+            TOPIC=PROPS_FROM_FILE.TOPIC;
+            VALUE=PROPS_FROM_FILE.VALUE;
         }
         catch(Exception e){
             System.out.println("Error happened: "+e.getMessage());
