@@ -1,0 +1,9 @@
+Yes, the new schema is compatible.
+
+the changes i made is just adding a new string field called "motherName" with default value
+"default".
+
+However, it did not work the first time I tried it.
+In order for the schema compatibility to work, they must have the same class name,
+when I tried it with different class name for each schame it was not compatible.
+when I did gave both of them the same class name, it did work.

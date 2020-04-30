@@ -1,0 +1,30 @@
+{
+  "namespace": "org.ishaym.training",
+  "type": "record",
+  "name": "Person",
+  "fields":
+  [
+    {
+      "name": "firstName",
+      "type": "string"
+    },
+    {
+      "name": "lastName",
+      "type": "string"
+    },
+    {
+      "name": "countryOfBirth",
+      "type": "string",
+      "default": "Israel"
+    },
+    {
+      "name": "age",
+      "type": "int"
+    },
+    {
+      "name": "petName",
+      "type": ["null", "string"],
+      "default": null
+    }
+  ]
+}

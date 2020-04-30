@@ -1,0 +1,15 @@
+kafkaProperties:
+  bootstrap.server: 'localhost:9092'
+  client.id: 'consumer-client-id'
+  schema.registry.url: 'http://localhost:8081'
+topicProperties:
+  name: 'avro-messages-section-5-3'
+  numPartitions: 1
+  replicationFactor: 1
+  creationTimeoutSeconds: 10
+consumerProperties:
+  groupId: 'avro-messages-consumer-5-3-group-id'
+  pollingTimeoutInMilliSeconds: 100
+  key.deserializer: 'org.apache.kafka.common.serialization.IntegerDeserializer'
+  value.deserializer: 'io.confluent.kafka.serializers.KafkaAvroDeserializer'
+  specific.avro.reader: true
