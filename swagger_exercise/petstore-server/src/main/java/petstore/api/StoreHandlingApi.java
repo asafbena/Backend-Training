@@ -33,9 +33,7 @@ public class StoreHandlingApi implements StoreApi {
             method = RequestMethod.GET)
     public ResponseEntity<Map<String, Integer>> getInventory() {
         Map<String, Integer> inventoryMap = new HashMap<>();
-        for (Order order: orders) {
-            updateInventoryByOrder(inventoryMap, order);
-        }
+        updateInventoryByOrders(inventoryMap);
         return new ResponseEntity<Map<String, Integer>>(inventoryMap, HttpStatus.OK);
     }
 
@@ -51,7 +49,14 @@ public class StoreHandlingApi implements StoreApi {
         if (isInvalidOrderId(orderId)) {
             return new ResponseEntity<Order>(HttpStatus.BAD_REQUEST);
         }
+        return getOrderByValidOrderId(orderId);
+    }
 
+    private Boolean isInvalidOrderId(Long orderId) {
+        return orderId > Constants.VALID_ORDER_ID_MAXIMUM_VALUE || orderId < Constants.VALID_ORDER_ID_MINIMAL_VALUE;
+    }
+
+    private ResponseEntity<Order> getOrderByValidOrderId(Long orderId) {
         for (Order order: orders) {
             if (order.getId().equals(orderId)) {
                 return new ResponseEntity<Order>(order, HttpStatus.OK);
@@ -60,8 +65,10 @@ public class StoreHandlingApi implements StoreApi {
         return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
     }
 
-    private Boolean isInvalidOrderId(Long orderId) {
-        return orderId > Constants.VALID_ORDER_ID_MAXIMUM_VALUE || orderId < Constants.VALID_ORDER_ID_MINIMAL_VALUE;
+    private void updateInventoryByOrders(Map<String, Integer> inventoryMap) {
+        for (Order order: orders) {
+            updateInventoryByOrder(inventoryMap, order);
+        }
     }
 
     private void updateInventoryByOrder(Map<String, Integer> inventoryMap, Order order) {

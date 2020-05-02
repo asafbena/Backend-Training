@@ -57,17 +57,20 @@ public class PetHandlingApi implements PetApi {
         if (isInvalidPetId(petId)) {
             return new ResponseEntity<Pet>(HttpStatus.BAD_REQUEST);
         }
+        return getPetByValidPetId(petId);
+    }
 
+    private Boolean isInvalidPetId(Long petId) {
+        return petId < Constants.VALID_PET_ID_MINIMAL_VALUE;
+    }
+
+    private ResponseEntity<Pet> getPetByValidPetId(Long petId) {
         for (Pet pet: pets) {
             if (pet.getId().equals(petId)) {
                 return new ResponseEntity<Pet>(pet, HttpStatus.OK);
             }
         }
         return new ResponseEntity<Pet>(HttpStatus.NOT_FOUND);
-    }
-
-    private Boolean isInvalidPetId(Long petId) {
-        return petId < Constants.VALID_PET_ID_MINIMAL_VALUE;
     }
 
     private void updateFilteredPetsByStatus(List<Pet> filteredPets, String filterStatus) {
