@@ -1,11 +1,12 @@
 package petstore.api;
 
 import org.json.simple.parser.ParseException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import petstore.model.Order;
+import utils.BasicTestSuite;
 import utils.DataExtractionUtils;
 import utils.TestsConstants;
 
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class TestStoreHandlingApi {
+public class TestStoreHandlingApi extends BasicTestSuite {
     private ArrayList<Order> orders = new ArrayList<Order>();
     private StoreHandlingApi storeHandlingApi;
 

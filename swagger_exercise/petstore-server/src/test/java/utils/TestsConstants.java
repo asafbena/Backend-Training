@@ -1,10 +1,11 @@
 package utils;
 
 import petstore.model.Pet;
-
 import java.util.ArrayList;
 
 public class TestsConstants {
+    public static final int TEST_NAME_STARTING_INDEX = 0;
+    public static final int TEST_NAME_NUMBER_OF_ADDITIONAL_CHARACTERS = 2;
     public static final String PETS_INTEGRATION_TESTS_DB_PATH = "./src/test/resources/pet_integration_tests.json";
     public static final String STORE_INTEGRATION_TESTS_DB_PATH = "./src/test/resources/store_integration_tests.json";
     public static final Long PET_INVALID_ID = -5L;

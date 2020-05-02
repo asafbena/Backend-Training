@@ -10,10 +10,12 @@ import petstore.model.Pet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import utils.BasicTestSuite;
 import utils.DataExtractionUtils;
 import utils.TestsConstants;
 
-public class TestPetHandlingApi {
+public class TestPetHandlingApi extends BasicTestSuite {
     private ArrayList<Pet> pets = new ArrayList<Pet>();
     private PetHandlingApi petHandlingApi;
 
