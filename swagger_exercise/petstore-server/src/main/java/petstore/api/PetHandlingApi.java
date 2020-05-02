@@ -50,6 +50,7 @@ public class PetHandlingApi implements PetApi {
             updateFilteredPetsByStatus(filteredPets, status);
         }
         LOGGER.info("Successfully collected pets data by the given pet statuses {}", statuses);
+        LOGGER.debug("The retrieved pets data is: {}", filteredPets);
         return new ResponseEntity<List<Pet>>(filteredPets, HttpStatus.OK);
     }
 

@@ -39,6 +39,7 @@ public class StoreHandlingApi implements StoreApi {
         LOGGER.info("Gathering inventory data according to existing orders.");
         Map<String, Integer> inventoryMap = new HashMap<>();
         updateInventoryByOrders(inventoryMap);
+        LOGGER.debug("The gathered inventory data is: {}", inventoryMap);
         return new ResponseEntity<Map<String, Integer>>(inventoryMap, HttpStatus.OK);
     }
 
@@ -51,9 +52,9 @@ public class StoreHandlingApi implements StoreApi {
             produces = {"application/json"},
             method = RequestMethod.GET)
     public ResponseEntity<Order> getOrderById(@Min(Constants.VALID_ORDER_ID_MINIMAL_VALUE) @Max(Constants.VALID_ORDER_ID_MAXIMUM_VALUE) @ApiParam(value = "ID of pet that needs to be fetched", required = true) @PathVariable("orderId") Long orderId) {
-        LOGGER.info("Getting an order according to given order id.");
+        LOGGER.info("Getting an order according to given order id {}.", orderId);
         if (isInvalidOrderId(orderId)) {
-            LOGGER.error("Received an order request with an invalid order id.");
+            LOGGER.error("Received an order request with an invalid order id {}.", orderId);
             return new ResponseEntity<Order>(HttpStatus.BAD_REQUEST);
         }
         return getOrderByValidOrderId(orderId);
@@ -69,6 +70,7 @@ public class StoreHandlingApi implements StoreApi {
         for (Order order: orders) {
             if (order.getId().equals(orderId)) {
                 LOGGER.info("Successfully found an order with the given order id {}.", orderId);
+                LOGGER.debug("The retrieved order is {}.", order);
                 return new ResponseEntity<Order>(order, HttpStatus.OK);
             }
         }
