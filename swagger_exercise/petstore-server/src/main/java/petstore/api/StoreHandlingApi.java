@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 public class StoreHandlingApi implements StoreApi {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StoreHandlingApi.class);
+
     private List<Order> orders;
 
     public StoreHandlingApi(List<Order> orders) {
@@ -32,6 +36,7 @@ public class StoreHandlingApi implements StoreApi {
             produces = {"application/json"},
             method = RequestMethod.GET)
     public ResponseEntity<Map<String, Integer>> getInventory() {
+        LOGGER.info("Gathering inventory data according to existing orders.");
         Map<String, Integer> inventoryMap = new HashMap<>();
         updateInventoryByOrders(inventoryMap);
         return new ResponseEntity<Map<String, Integer>>(inventoryMap, HttpStatus.OK);
@@ -46,22 +51,28 @@ public class StoreHandlingApi implements StoreApi {
             produces = {"application/json"},
             method = RequestMethod.GET)
     public ResponseEntity<Order> getOrderById(@Min(Constants.VALID_ORDER_ID_MINIMAL_VALUE) @Max(Constants.VALID_ORDER_ID_MAXIMUM_VALUE) @ApiParam(value = "ID of pet that needs to be fetched", required = true) @PathVariable("orderId") Long orderId) {
+        LOGGER.info("Getting an order according to given order id.");
         if (isInvalidOrderId(orderId)) {
+            LOGGER.error("Received an order request with an invalid order id.");
             return new ResponseEntity<Order>(HttpStatus.BAD_REQUEST);
         }
         return getOrderByValidOrderId(orderId);
     }
 
     private Boolean isInvalidOrderId(Long orderId) {
+        LOGGER.info("Checking if the given order id {} is between {} and {}.", orderId,
+                Constants.VALID_ORDER_ID_MINIMAL_VALUE, Constants.VALID_ORDER_ID_MAXIMUM_VALUE);
         return orderId > Constants.VALID_ORDER_ID_MAXIMUM_VALUE || orderId < Constants.VALID_ORDER_ID_MINIMAL_VALUE;
     }
 
     private ResponseEntity<Order> getOrderByValidOrderId(Long orderId) {
         for (Order order: orders) {
             if (order.getId().equals(orderId)) {
+                LOGGER.info("Successfully found an order with the given order id {}.", orderId);
                 return new ResponseEntity<Order>(order, HttpStatus.OK);
             }
         }
+        LOGGER.error("Could not find an order with the given id {}.", orderId);
         return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
     }
 

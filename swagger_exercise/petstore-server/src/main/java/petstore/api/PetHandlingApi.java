@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PetHandlingApi implements PetApi {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PetHandlingApi.class);
+
     private List<Pet> pets;
 
     public PetHandlingApi(List<Pet> pets) {
@@ -34,14 +38,18 @@ public class PetHandlingApi implements PetApi {
             method = RequestMethod.GET)
     public ResponseEntity<List<Pet>> findPetsByStatus(@NotNull @ApiParam(value = "Status values that need to be considered for filter", required = true, allowableValues = "available, pending, sold") @Valid @RequestParam(value = "status", required = true) List<String> statuses) {
         ArrayList<Pet> filteredPets = new ArrayList<Pet>();
+        LOGGER.info("Finding pets that have one the following statuses: {}.", statuses);
         for (String status: statuses) {
             try {
                 Pet.StatusEnum.valueOf(status.toUpperCase());
             } catch (IllegalArgumentException e) {
+                LOGGER.error("The given status {} is not a valid pet status. The valid statuses are {}.",
+                        status, Pet.StatusEnum.values());
                 return new ResponseEntity<List<Pet>>(HttpStatus.BAD_REQUEST);
             }
             updateFilteredPetsByStatus(filteredPets, status);
         }
+        LOGGER.info("Successfully collected pets data by the given pet statuses {}", statuses);
         return new ResponseEntity<List<Pet>>(filteredPets, HttpStatus.OK);
     }
 
@@ -55,12 +63,16 @@ public class PetHandlingApi implements PetApi {
             method = RequestMethod.GET)
     public ResponseEntity<Pet> getPetById(@ApiParam(value = "ID of pet to return", required = true) @PathVariable("petId") Long petId) {
         if (isInvalidPetId(petId)) {
+            LOGGER.error("Received a pet request with an invalid pet id.");
             return new ResponseEntity<Pet>(HttpStatus.BAD_REQUEST);
         }
+        LOGGER.info("Successfully collected a pet data by given pet id {}.", petId);
         return getPetByValidPetId(petId);
     }
 
     private Boolean isInvalidPetId(Long petId) {
+        LOGGER.info("Checking if the given pet id {} is larger than the minimal valid pet id {}.",
+                petId, Constants.VALID_PET_ID_MINIMAL_VALUE);
         return petId < Constants.VALID_PET_ID_MINIMAL_VALUE;
     }
 
@@ -70,6 +82,7 @@ public class PetHandlingApi implements PetApi {
                 return new ResponseEntity<Pet>(pet, HttpStatus.OK);
             }
         }
+        LOGGER.error("Could not find a pet with the following id: {}.", petId);
         return new ResponseEntity<Pet>(HttpStatus.NOT_FOUND);
     }
 
