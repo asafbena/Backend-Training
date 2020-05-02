@@ -66,7 +66,6 @@ public class PetHandlingApi implements PetApi {
             LOGGER.error("Received a pet request with an invalid pet id.");
             return new ResponseEntity<Pet>(HttpStatus.BAD_REQUEST);
         }
-        LOGGER.info("Successfully collected a pet data by given pet id {}.", petId);
         return getPetByValidPetId(petId);
     }
 
@@ -79,6 +78,7 @@ public class PetHandlingApi implements PetApi {
     private ResponseEntity<Pet> getPetByValidPetId(Long petId) {
         for (Pet pet: pets) {
             if (pet.getId().equals(petId)) {
+                LOGGER.info("Successfully collected a pet data by given pet id {}.", petId);
                 return new ResponseEntity<Pet>(pet, HttpStatus.OK);
             }
         }

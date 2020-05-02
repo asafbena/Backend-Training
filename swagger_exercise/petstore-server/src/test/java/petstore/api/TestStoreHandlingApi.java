@@ -42,7 +42,7 @@ public class TestStoreHandlingApi {
     }
 
     @Test
-    public void testOrderWithInvalidBelowMaximumId() {
+    public void testOrderWithInvalidBelowMinimalId() {
         ResponseEntity<Order> responseEntity = storeHandlingApi.getOrderById(
                 TestsConstants.INVALID_BELOW_MINIMAL_VALUE_ORDER_ID);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
