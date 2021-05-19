@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class TestStoreHandlingApi extends BasicTestSuite {
+class TestStoreHandlingApi extends BasicTestSuite {
     private ArrayList<Order> orders = new ArrayList<Order>();
     private StoreHandlingApi storeHandlingApi;
 
@@ -24,45 +24,45 @@ public class TestStoreHandlingApi extends BasicTestSuite {
     }
 
     @Test
-    public void testGetOrderByIdSuccessfulRequestStatusCode() {
+    void testGetOrderByIdSuccessfulRequestStatusCode() {
         ResponseEntity<Order> responseEntity = storeHandlingApi.getOrderById(TestsConstants.EXISTING_ORDER_ID);
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
-    public void testGetOrderById() {
+    void testGetOrderById() {
         Order order = storeHandlingApi.getOrderById(TestsConstants.EXISTING_ORDER_ID).getBody();
         Assertions.assertEquals(Order.StatusEnum.DELIVERED, order.getStatus());
     }
 
     @Test
-    public void testOrderWithInvalidAboveMaximumId() {
+    void testOrderWithInvalidAboveMaximumId() {
         ResponseEntity<Order> responseEntity = storeHandlingApi.getOrderById(
                 TestsConstants.INVALID_OVER_MAXIMUM_VALUE_ORDER_ID);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
     @Test
-    public void testOrderWithInvalidBelowMinimalId() {
+    void testOrderWithInvalidBelowMinimalId() {
         ResponseEntity<Order> responseEntity = storeHandlingApi.getOrderById(
                 TestsConstants.INVALID_BELOW_MINIMAL_VALUE_ORDER_ID);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
     @Test
-    public void testOrderWithIdOfNotFoundOrder() {
+    void testOrderWithIdOfNotFoundOrder() {
         ResponseEntity<Order> responseEntity = storeHandlingApi.getOrderById(TestsConstants.NOT_FOUND_ORDER_ID);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
     @Test
-    public void testGetInventoryStatusCode() {
+    void testGetInventoryStatusCode() {
         ResponseEntity<Map<String, Integer>> responseEntity = storeHandlingApi.getInventory();
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
-    public void testGetInventory() {
+    void testGetInventory() {
         Map<String, Integer> inventoryMap = storeHandlingApi.getInventory().getBody();
         assertInventoryQuantityByStatus(TestsConstants.NUMBER_OF_INVENTORY_APPROVED_ORDERS, inventoryMap,
                 Order.StatusEnum.APPROVED);

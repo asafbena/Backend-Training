@@ -9,8 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import petstore.model.Pet;
 import utils.Constants;
@@ -29,15 +28,15 @@ public class PetHandlingApi implements PetApi {
         this.pets = pets;
     }
 
+    @Override
     @ApiOperation(value = "Finds Pets by status", nickname = "findPetsByStatus", notes = "Multiple status values can be provided with comma separated strings", response = Pet.class, responseContainer = "List", tags = {"pet",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation", response = Pet.class, responseContainer = "List"),
             @ApiResponse(code = 400, message = "Invalid status value")})
-    @RequestMapping(value = "/pet/findByStatus",
-            produces = {"application/json"},
-            method = RequestMethod.GET)
+    @GetMapping(value = "/pet/findByStatus",
+            produces = {"application/json"})
     public ResponseEntity<List<Pet>> findPetsByStatus(@NotNull @ApiParam(value = "Status values that need to be considered for filter", required = true, allowableValues = "available, pending, sold") @Valid @RequestParam(value = "status", required = true) List<String> statuses) {
-        ArrayList<Pet> filteredPets = new ArrayList<Pet>();
+        ArrayList<Pet> filteredPets = new ArrayList<>();
         LOGGER.info("Finding pets that have one the following statuses: {}.", statuses);
         for (String status: statuses) {
             try {
@@ -45,27 +44,27 @@ public class PetHandlingApi implements PetApi {
             } catch (IllegalArgumentException e) {
                 LOGGER.error("The given status {} is not a valid pet status. The valid statuses are {}.",
                         status, Pet.StatusEnum.values());
-                return new ResponseEntity<List<Pet>>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             updateFilteredPetsByStatus(filteredPets, status);
         }
         LOGGER.info("Successfully collected pets data by the given pet statuses {}", statuses);
         LOGGER.debug("The retrieved pets data is: {}", filteredPets);
-        return new ResponseEntity<List<Pet>>(filteredPets, HttpStatus.OK);
+        return new ResponseEntity<>(filteredPets, HttpStatus.OK);
     }
 
+    @Override
     @ApiOperation(value = "Find pet by ID", nickname = "getPetById", notes = "Returns a single pet", response = Pet.class, tags = {"pet",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation", response = Pet.class),
             @ApiResponse(code = 400, message = "Invalid ID supplied"),
             @ApiResponse(code = 404, message = "Pet not found")})
-    @RequestMapping(value = "/pet/{petId}",
-            produces = {"application/json"},
-            method = RequestMethod.GET)
+    @GetMapping(value = "/pet/{petId}",
+            produces = {"application/json"})
     public ResponseEntity<Pet> getPetById(@ApiParam(value = "ID of pet to return", required = true) @PathVariable("petId") Long petId) {
-        if (isInvalidPetId(petId)) {
+        if (Boolean.TRUE.equals(isInvalidPetId(petId))) {
             LOGGER.error("Received a pet request with an invalid pet id.");
-            return new ResponseEntity<Pet>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return getPetByValidPetId(petId);
     }
@@ -80,11 +79,11 @@ public class PetHandlingApi implements PetApi {
         for (Pet pet: pets) {
             if (pet.getId().equals(petId)) {
                 LOGGER.info("Successfully collected a pet data by given pet id {}.", petId);
-                return new ResponseEntity<Pet>(pet, HttpStatus.OK);
+                return new ResponseEntity<>(pet, HttpStatus.OK);
             }
         }
         LOGGER.error("Could not find a pet with the following id: {}.", petId);
-        return new ResponseEntity<Pet>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     private void updateFilteredPetsByStatus(List<Pet> filteredPets, String filterStatus) {

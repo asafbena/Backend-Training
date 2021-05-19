@@ -4,10 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import petstore.api.TestStoreHandlingApi;
 
 public class BasicTestSuite {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TestStoreHandlingApi.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BasicTestSuite.class);
 
     @BeforeEach
     public void beforeEach(TestInfo testInfo) {

@@ -15,7 +15,7 @@ import utils.BasicTestSuite;
 import utils.DataExtractionUtils;
 import utils.TestsConstants;
 
-public class TestPetHandlingApi extends BasicTestSuite {
+class TestPetHandlingApi extends BasicTestSuite {
     private ArrayList<Pet> pets = new ArrayList<Pet>();
     private PetHandlingApi petHandlingApi;
 
@@ -25,45 +25,45 @@ public class TestPetHandlingApi extends BasicTestSuite {
     }
 
     @Test
-    public void testGetPetByInvalidId() {
+    void testGetPetByInvalidId() {
         ResponseEntity<Pet> responseEntity = petHandlingApi.getPetById(TestsConstants.PET_INVALID_ID);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
     @Test
-    public void testGetPetByIdOfNotFoundPet() {
+    void testGetPetByIdOfNotFoundPet() {
         ResponseEntity<Pet> responseEntity = petHandlingApi.getPetById(TestsConstants.NOT_FOUND_PET_ID);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
     @Test
-    public void testGetPetByIdSuccessfulRequestStatusCode() {
+    void testGetPetByIdSuccessfulRequestStatusCode() {
         ResponseEntity<Pet> responseEntity = petHandlingApi.getPetById(TestsConstants.EXISTING_PET_ID);
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
-    public void testGetPetById() {
+    void testGetPetById() {
         Pet filteredPet = petHandlingApi.getPetById(TestsConstants.EXISTING_PET_ID).getBody();
         Pet expectedPet = DataExtractionUtils.extractPetData(TestsConstants.PET_DATA_BY_ID);
         Assertions.assertEquals(expectedPet, filteredPet);
     }
 
     @Test
-    public void testGetPetsByInvalidStatus() {
+    void testGetPetsByInvalidStatus() {
         ResponseEntity<List<Pet>> responseEntity = petHandlingApi.findPetsByStatus(TestsConstants.INVALID_PET_STATUSES);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
     @Test
-    public void testFindPetsByStatusSuccessfulRequestStatusCode() {
+    void testFindPetsByStatusSuccessfulRequestStatusCode() {
         ResponseEntity<List<Pet>> responseEntity = petHandlingApi.findPetsByStatus(
                 TestsConstants.EXISTING_PET_STATUSES);
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
-    public void testFindPetsByStatus() {
+    void testFindPetsByStatus() {
         List<Pet> filteredPets = petHandlingApi.findPetsByStatus(TestsConstants.EXISTING_PET_STATUSES).getBody();
         assertPetsCollectionEquality(TestsConstants.EXISTING_PETS_BY_STATUSES, filteredPets);
     }

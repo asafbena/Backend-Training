@@ -9,8 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import petstore.model.Order;
 import utils.Constants;
 
@@ -29,33 +28,33 @@ public class StoreHandlingApi implements StoreApi {
         this.orders = orders;
     }
 
+    @Override
     @ApiOperation(value = "Returns pet inventories by status", nickname = "getInventory", notes = "Returns a map of status codes to quantities", response = Integer.class, responseContainer = "Map", tags = {"store",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation", response = Map.class, responseContainer = "Map")})
-    @RequestMapping(value = "/store/inventory",
-            produces = {"application/json"},
-            method = RequestMethod.GET)
+    @GetMapping(value = "/store/inventory",
+            produces = {"application/json"})
     public ResponseEntity<Map<String, Integer>> getInventory() {
         LOGGER.info("Gathering inventory data according to existing orders.");
         Map<String, Integer> inventoryMap = new HashMap<>();
         updateInventoryByOrders(inventoryMap);
         LOGGER.debug("The gathered inventory data is: {}", inventoryMap);
-        return new ResponseEntity<Map<String, Integer>>(inventoryMap, HttpStatus.OK);
+        return new ResponseEntity<>(inventoryMap, HttpStatus.OK);
     }
 
+    @Override
     @ApiOperation(value = "Find purchase order by ID", nickname = "getOrderById", notes = "For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions", response = Order.class, tags = {"store",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation", response = Order.class),
             @ApiResponse(code = 400, message = "Invalid ID supplied"),
             @ApiResponse(code = 404, message = "Order not found")})
-    @RequestMapping(value = "/store/order/{orderId}",
-            produces = {"application/json"},
-            method = RequestMethod.GET)
+    @GetMapping(value = "/store/order/{orderId}",
+            produces = {"application/json"})
     public ResponseEntity<Order> getOrderById(@Min(Constants.VALID_ORDER_ID_MINIMAL_VALUE) @Max(Constants.VALID_ORDER_ID_MAXIMUM_VALUE) @ApiParam(value = "ID of pet that needs to be fetched", required = true) @PathVariable("orderId") Long orderId) {
         LOGGER.info("Getting an order according to given order id {}.", orderId);
-        if (isInvalidOrderId(orderId)) {
+        if (Boolean.TRUE.equals(isInvalidOrderId(orderId))) {
             LOGGER.error("Received an order request with an invalid order id {}.", orderId);
-            return new ResponseEntity<Order>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return getOrderByValidOrderId(orderId);
     }
@@ -71,11 +70,11 @@ public class StoreHandlingApi implements StoreApi {
             if (order.getId().equals(orderId)) {
                 LOGGER.info("Successfully found an order with the given order id {}.", orderId);
                 LOGGER.debug("The retrieved order is {}.", order);
-                return new ResponseEntity<Order>(order, HttpStatus.OK);
+                return new ResponseEntity<>(order, HttpStatus.OK);
             }
         }
         LOGGER.error("Could not find an order with the given id {}.", orderId);
-        return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     private void updateInventoryByOrders(Map<String, Integer> inventoryMap) {
