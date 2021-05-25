@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TestKafkaConsumer {
+class TestKafkaConsumer {
     private org.apache.kafka.clients.consumer.KafkaConsumer<String, String> mockKafkaConsumer;
 
     public TestKafkaConsumer() {
@@ -21,7 +21,7 @@ public class TestKafkaConsumer {
     }
 
     @Test
-    public void testCloseConsumer() {
+    void testCloseConsumer() {
         KafkaConsumer<String> kafkaConsumer = new KafkaConsumer<String>(mockKafkaConsumer, TestsConstants.TEST_TOPIC,
                 TestsConstants.EMBEDDED_CONSUMER_POLLING_TIMEOUT_MS, TestsConstants.IS_TESTING_MODE);
         kafkaConsumer.closeConsumer();
@@ -29,15 +29,15 @@ public class TestKafkaConsumer {
     }
 
     @Test
-    public void testSubscribeTo() {
+    void testSubscribeTo() {
         KafkaConsumer<String> kafkaConsumer = new KafkaConsumer<String>(mockKafkaConsumer, TestsConstants.TEST_TOPIC,
                 TestsConstants.EMBEDDED_CONSUMER_POLLING_TIMEOUT_MS, TestsConstants.IS_TESTING_MODE);
-        kafkaConsumer.subscribe_to(TestsConstants.ADDITIONAL_TEST_TOPIC);
+        kafkaConsumer.subscribeTo(TestsConstants.ADDITIONAL_TEST_TOPIC);
         Mockito.verify(mockKafkaConsumer).subscribe(Collections.singleton(TestsConstants.ADDITIONAL_TEST_TOPIC));
     }
 
     @Test
-    public void testConsumerRunMethod() {
+    void testConsumerRunMethod() {
         KafkaConsumer<String> kafkaConsumer = new KafkaConsumer<String>(mockKafkaConsumer, TestsConstants.TEST_TOPIC,
                 TestsConstants.EMBEDDED_CONSUMER_POLLING_TIMEOUT_MS, TestsConstants.IS_TESTING_MODE);
         ConsumerRecords<String, String> expectedConsumerRecords = getExpectedConsumedRecords();
@@ -48,7 +48,7 @@ public class TestKafkaConsumer {
     }
 
     @Test
-    public void testPollConsumedRecords() {
+    void testPollConsumedRecords() {
         KafkaConsumer<String> kafkaConsumer = new KafkaConsumer<String>(mockKafkaConsumer, TestsConstants.TEST_TOPIC,
                 TestsConstants.EMBEDDED_CONSUMER_POLLING_TIMEOUT_MS, TestsConstants.IS_TESTING_MODE);
         ConsumerRecords<String, String> expectedConsumerRecords = getExpectedConsumedRecords();

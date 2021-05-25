@@ -17,4 +17,7 @@ public class Constants {
             .setAge(42)
             .setPetName("Rex")
             .build();
+
+    private Constants() {
+    }
 }

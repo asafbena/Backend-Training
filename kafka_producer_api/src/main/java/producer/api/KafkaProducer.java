@@ -16,7 +16,7 @@ public class KafkaProducer<T> {
 
     public void sendMessage(String messageTopic, T messageContent) {
         LOGGER.info("Sending the following message with topic {}: {}", messageTopic, messageContent);
-        producer.send(new ProducerRecord<String, T>(messageTopic, messageContent));
+        producer.send(new ProducerRecord<>(messageTopic, messageContent));
     }
 
     public void closeProducer() {

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import utils.TestsConstants;
 
-public class TestKafkaProducer {
+class TestKafkaProducer {
     private org.apache.kafka.clients.producer.Producer<String, String> mockKafkaProducer;
 
     public TestKafkaProducer() {
@@ -13,14 +13,14 @@ public class TestKafkaProducer {
     }
 
     @Test
-    public void testCloseProducer() {
+    void testCloseProducer() {
         KafkaProducer<String> kafkaProducer = new KafkaProducer<String>(mockKafkaProducer);
         kafkaProducer.closeProducer();
         Mockito.verify(mockKafkaProducer).close();
     }
 
     @Test
-    public void testSendMessage() {
+    void testSendMessage() {
         KafkaProducer<String> kafkaProducer = new KafkaProducer<String>(mockKafkaProducer);
         kafkaProducer.sendMessage(TestsConstants.TEST_TOPIC, TestsConstants.TEST_MESSAGE_CONTENT);
         ProducerRecord<String, String> expectedRecord = new ProducerRecord<String, String>(TestsConstants.TEST_TOPIC,

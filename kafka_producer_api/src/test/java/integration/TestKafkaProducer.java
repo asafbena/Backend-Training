@@ -15,9 +15,9 @@ import producer.api.KafkaProducer;
 import utils.TestsConstants;
 
 @EmbeddedKafka(brokerProperties = {TestsConstants.KAFKA_LOG_DIRECTORY_PROPERTY})
-public class TestKafkaProducer {
+class TestKafkaProducer {
     @Test
-    public void testProducerIntegrationWithConsumer(@EmbeddedKafkaProducer(keySerializerClass = StringSerializer.class
+    void testProducerIntegrationWithConsumer(@EmbeddedKafkaProducer(keySerializerClass = StringSerializer.class
             , valueSerializerClass = StringSerializer.class) Producer<String, String> producer
             , @EmbeddedKafkaConsumer(properties = {TestsConstants.EMBEDDED_CONSUMER_GROUP_ID_PROPERTY
             , TestsConstants.EMBEDDED_CONSUMER_AUTO_OFFSET_RESET_PROPERTY}

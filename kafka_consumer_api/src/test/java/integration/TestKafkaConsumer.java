@@ -14,9 +14,9 @@ import org.unbrokendome.embedded.kafka.junit5.EmbeddedKafkaProducer;
 import utils.TestsConstants;
 
 @EmbeddedKafka(brokerProperties = {TestsConstants.KAFKA_LOG_DIRECTORY_PROPERTY})
-public class TestKafkaConsumer {
+class TestKafkaConsumer {
     @Test
-    public void testConsumerIntegrationWithProducer(@EmbeddedKafkaProducer(keySerializerClass = StringSerializer.class
+    void testConsumerIntegrationWithProducer(@EmbeddedKafkaProducer(keySerializerClass = StringSerializer.class
             , valueSerializerClass = StringSerializer.class) Producer<String, String> producer
             , @EmbeddedKafkaConsumer(properties = {TestsConstants.EMBEDDED_CONSUMER_GROUP_ID_PROPERTY
             , TestsConstants.EMBEDDED_CONSUMER_AUTO_OFFSET_RESET_PROPERTY}

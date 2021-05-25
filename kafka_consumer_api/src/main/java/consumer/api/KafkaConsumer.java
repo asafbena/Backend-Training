@@ -20,10 +20,10 @@ public class KafkaConsumer<T> implements Runnable{
         this.isTestingMode = isTestingMode;
         this.pollingMessageTimeoutMs = pollingMessageTimeoutMs;
         this.consumer = consumer;
-        subscribe_to(subscribedTopic);
+        subscribeTo(subscribedTopic);
     }
 
-    public void subscribe_to(String topicName) {
+    public void subscribeTo(String topicName) {
         consumer.subscribe(Collections.singleton(topicName));
         LOGGER.info("The consumer is now subscribed to {} topic", topicName);
     }
@@ -47,18 +47,19 @@ public class KafkaConsumer<T> implements Runnable{
     }
 
     private void handleConsumedRecords() {
-        ConsumerRecords<String, T> records = pollConsumedRecords();
-        for (ConsumerRecord<String, T> record : records) {
-            handleReceivedRecord(record);
+        ConsumerRecords<String, T> consumedRecords = pollConsumedRecords();
+        for (ConsumerRecord<String, T> consumedRecord : consumedRecords) {
+            handleReceivedRecord(consumedRecord);
         }
     }
 
-    private void handleReceivedRecord(ConsumerRecord<String, T> record) {
-        T recordContent = record.value();
+    private void handleReceivedRecord(ConsumerRecord<String, T> consumedRecord) {
+        T recordContent = consumedRecord.value();
         LOGGER.info("The consumer managed to poll the following message: {}", recordContent);
         additionalRecordHandling(recordContent);
     }
 
     protected void additionalRecordHandling(T consumedRecordContent) {
+        // Method is not implemented - the basic consumer does not require additional handling
     }
 }

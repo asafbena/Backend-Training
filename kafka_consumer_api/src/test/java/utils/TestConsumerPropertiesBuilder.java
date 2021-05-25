@@ -6,16 +6,16 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
 
-public class TestConsumerPropertiesBuilder {
+class TestConsumerPropertiesBuilder {
     @Test
-    public void testBuildConsumerProperties() {
+    void testBuildConsumerProperties() {
         Properties properties = ConsumerPropertiesBuilder.buildConsumerProperties(TestsConstants.DESERIALIZER_PATH,
                 TestsConstants.CONSUMER_GROUP_ID);
         assertCommonConsumerProperties(properties, TestsConstants.DESERIALIZER_PATH, TestsConstants.CONSUMER_GROUP_ID);
     }
 
     @Test
-    public void testBuildAvroConsumerProperties() {
+    void testBuildAvroConsumerProperties() {
         Properties properties = ConsumerPropertiesBuilder.buildAvroConsumerProperties(TestsConstants.DESERIALIZER_PATH,
                 TestsConstants.CONSUMER_GROUP_ID);
         assertCommonConsumerProperties(properties, TestsConstants.DESERIALIZER_PATH, TestsConstants.CONSUMER_GROUP_ID);

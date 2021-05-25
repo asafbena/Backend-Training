@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
 
-public class TestProducerPropertiesBuilder {
+class TestProducerPropertiesBuilder {
     @Test
-    public void testBuildProducerProperties() {
+    void testBuildProducerProperties() {
         Properties properties = ProducerPropertiesBuilder.buildProducerProperties(TestsConstants.SERIALIZER_PATH);
         assertCommonProducerProperties(properties, TestsConstants.SERIALIZER_PATH);
     }
 
     @Test
-    public void testBuildAvroProducerProperties() {
+    void testBuildAvroProducerProperties() {
         Properties properties = ProducerPropertiesBuilder.buildAvroProducerProperties(TestsConstants.SERIALIZER_PATH);
         assertCommonProducerProperties(properties, TestsConstants.SERIALIZER_PATH);
         Assertions.assertEquals(Constants.SCHEMA_REGISTRY_URL,
